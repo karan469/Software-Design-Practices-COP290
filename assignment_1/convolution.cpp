@@ -36,7 +36,7 @@ int sub_convo(vector<vector<int>> v1, vector<vector<int>> v2){
     return sum;
 }
 void sub_vector(vector<vector<int>> as, int n, int a, int b){
-    vector<vector<int>> sol;
+    vector<vector<int>> sol; //---> Cant initialize a vector in this manner(thus the segmentation fault), need to see another alternative
     for(int i=0;i<n;i++){
         for(int j=0;j<n;j++){
             sol[i][j] = as[i+a][j+b];
