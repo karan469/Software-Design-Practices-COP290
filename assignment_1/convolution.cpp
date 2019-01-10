@@ -35,35 +35,35 @@ int sub_convo(vector<vector<int>> v1, vector<vector<int>> v2){
     }
     return sum;
 }
-void sub_vector(vector<vector<int>> as, int n, int a, int b){
-    vector<vector<int>> sol; //---> Cant initialize a vector in this manner(thus the segmentation fault), need to see another alternative
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            sol[i][j] = as[i+a][j+b];
-        }
-    }
-    print(sol);
-}
+// void sub_vector(vector<vector<int>> as, int n, int a, int b){
+//     vector<vector<int>> sol;
+//     for(int i=0;i<n;i++){
+//         for(int j=0;j<n;j++){
+//             sol[i][j] = as[i+a][j+b];
+//         }
+//     }
+//     print(sol);
+// }
 void convulution(vector<vector<int>> v1, vector<vector<int>> v2){
     // v1: kernel
-    vector<vector<int>> v;
+    
     int rows_v1 = v1.size();
     int rows_v2 = v2.size();
     int coloumns_v1 = v1[0].size();
     int coloumns_v2 = v2[0].size();
+    int n = rows_v1;
     
-    vector<vector<int>> v_temp;
+    vector<vector<int>> v((rows_v2-rows_v1+1),vector<int>((coloumns_v2-coloumns_v1+1),0)); //answer here
+    vector<vector<int>> v_temp(n,vector<int>(n,0)); //Extraction of smaller matrix from image matrix
     
     for(int x=0;x<(coloumns_v2-coloumns_v1+1);x++){
         for(int y=0;y<(rows_v2-rows_v1+1);y++){
-            // v_temp = v2[x][y];
             for(int a=0;a<coloumns_v1;a++){
                 for(int b=0;b<rows_v1;b++){
                     v_temp[a][b] = v2[a+x][b+y];
                 }
             }
             v[x][y] = sub_convo(v1,v_temp);
-            // cout<<v[x][y];
         }
     }
     print(v);
@@ -76,8 +76,7 @@ int main()
   vector<vector<int>> v2{{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6}};
   vector<vector<int>> v1{{1,2,3},{1,2,3},{1,2,3}};
   //vector<vector<int>> v3{{3,4,5},{3,4,5},{3,4,5}};
-  //vector<vector<int>> v2 = convulution(v1,v);
-  sub_vector(v2,3,0,2);
+    convulution(v1,v2);
   //cout<<sub_convo(v1,v2);
     
   return 0;
