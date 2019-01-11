@@ -1,8 +1,7 @@
-// Example program
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#define HIGH_VECTOR_INT vector<vector<int>>;
+#define Vector_Matrix vector<vector<int>>
 using namespace std;
 
 
@@ -15,7 +14,7 @@ using namespace std;
 //     }
 // }
 
-void print(vector<vector<int>> v){
+void print(Vector_Matrix v){
     for(int i=0;i<v.size();i++){
       for(int j=0;j<v[0].size();j++){
           cout<<v[i][j]<<" ";
@@ -25,7 +24,7 @@ void print(vector<vector<int>> v){
   }
 }
 
-int sub_convo(vector<vector<int>> v1, vector<vector<int>> v2){
+int sub_convo(Vector_Matrix v1, Vector_Matrix v2){
     int sum = 0;
     int n = v1[0].size();
     for(int i = 0;i<n;i++){
@@ -44,7 +43,7 @@ int sub_convo(vector<vector<int>> v1, vector<vector<int>> v2){
 //     }
 //     print(sol);
 // }
-void convulution(vector<vector<int>> v1, vector<vector<int>> v2){
+void convulution(Vector_Matrix v1, Vector_Matrix v2){
     // v1: kernel
     
     int rows_v1 = v1.size();
@@ -53,8 +52,8 @@ void convulution(vector<vector<int>> v1, vector<vector<int>> v2){
     int coloumns_v2 = v2[0].size();
     int n = rows_v1;
     
-    vector<vector<int>> v((rows_v2-rows_v1+1),vector<int>((coloumns_v2-coloumns_v1+1),0)); //answer here
-    vector<vector<int>> v_temp(n,vector<int>(n,0)); //Extraction of smaller matrix from image matrix
+    Vector_Matrix v((rows_v2-rows_v1+1),vector<int>((coloumns_v2-coloumns_v1+1),0)); //answer here
+    Vector_Matrix v_temp(n,vector<int>(n,0)); //Extraction of smaller matrix from image matrix
     
     for(int x=0;x<(coloumns_v2-coloumns_v1+1);x++){
         for(int y=0;y<(rows_v2-rows_v1+1);y++){
@@ -73,8 +72,8 @@ void convulution(vector<vector<int>> v1, vector<vector<int>> v2){
 int main()
 {
   //int kernel = {{1,2},{2,3},{3,4}};
-  vector<vector<int>> v2{{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6}};
-  vector<vector<int>> v1{{1,2,3},{1,2,3},{1,2,3}};
+  Vector_Matrix v2{{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6}};
+  Vector_Matrix v1{{1,2,3},{1,2,3},{1,2,3}};
   //vector<vector<int>> v3{{3,4,5},{3,4,5},{3,4,5}};
     convulution(v1,v2);
   //cout<<sub_convo(v1,v2);
