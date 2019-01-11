@@ -43,7 +43,8 @@ int sub_convo(Vector_Matrix v1, Vector_Matrix v2){
 //     }
 //     print(sol);
 // }
-void convulution(Vector_Matrix v1, Vector_Matrix v2){
+
+Vector_Matrix convolution(Vector_Matrix v1, Vector_Matrix v2){
     // v1: kernel
     
     int rows_v1 = v1.size();
@@ -65,9 +66,19 @@ void convulution(Vector_Matrix v1, Vector_Matrix v2){
             v[x][y] = sub_convo(v1,v_temp);
         }
     }
-    print(v);
-        
+    //print(v);
+    return v;    
 }
+Vector_Matrix convolution_pad(Vector_Matrix v1, Vector_Matrix v2, int padding){
+    Vector_Matrix pad(v2.size()+2*padding,vector<int>(v2[0].size()+2*padding,0));
+    for(int q=0;q<v2.size();q++){
+        for(int w=0;w<v2[0].size();w++){
+            pad[q+padding][w+padding] = v2[q][w];
+        }
+    }
+    return convolution(v1,pad);
+}
+
 
 int main()
 {
@@ -75,7 +86,7 @@ int main()
   Vector_Matrix v2{{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6}};
   Vector_Matrix v1{{1,2,3},{1,2,3},{1,2,3}};
   //vector<vector<int>> v3{{3,4,5},{3,4,5},{3,4,5}};
-    convulution(v1,v2);
+    print(convolution_pad(v1,v2,1));
   //cout<<sub_convo(v1,v2);
     
   return 0;
