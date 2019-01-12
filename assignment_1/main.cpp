@@ -227,16 +227,124 @@ int main(int argc, char const *argv[])
         print(convolution(v1,v2));
     }
     else if(check == "convolution_withoutpadding_matrixmult"){
+        stringstream convert(argv[2]);
+        int padsize;
+        if (!(convert >> padsize)) // do the conversion
+            padsize = 0; // if conversion fails, set myint to a default value
+        //main matrix size
+        stringstream convert1(argv[4]);
+        int size;
+        if (!(convert1 >> size)) // do the conversion
+            size = 0; // if conversion fails, set myint to a default value
+        
+        // main matrix v2
+        ifstream infile(argv[3]);
+        string line ="";
+        int n = 0;
+        Vector_Matrix v2(size, vector<int>(size,0));
+        
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++)
+            {
+                getline(infile, line);
+                if(line != "")
+                {
+                    stringstream num(line);
+                    num >> n;
+                    v2[j][i] = n;
+                }
+            }    
+        } 
+
+        // kernel row number
+        int size2 = 0;
+        stringstream convert2(argv[6]);
+        if (!(convert2 >> size2)) // do the conversion
+            size2 = 0; // if conversion fails, set myint to a default value
+        
+        //making of kernel v1
+        ifstream infile1(argv[5]);
+        line ="";
+        n = 0;
+        Vector_Matrix v1(size2, vector<int>(size2,0));
+        
+        for(int i = 0; i < size2; i++){
+            for(int j = 0; j < size2; j++)
+            {
+                getline(infile1, line);
+                if(line != "")
+                {
+                    stringstream num(line);
+                    num >> n;
+                    v1[j][i] = n;
+                }
+            }    
+        }
+        int padding = (size2-1)/2;//optimal but not used now
+        // v2 = convolution_pad(v2,padsize);
+        print(convolution(v1,v2));
 
     }
-    else if(check == "max_pooling"){
-
+    //// ./main.out pooling max matrix1.txt matrix1_numrows stride
+    //// ./main.out pooling avg matrix1.txt matrix1_numrows stride
+    else if(check == "pooling"){
+        string pool = "";
+        stringstream convert(argv[2]);
+        convert >> pool;
+        //main matrix size
+        stringstream convert1(argv[4]);
+        int size;
+        if (!(convert1 >> size)) // do the conversion
+            size = 0; // if conversion fails, set myint to a default value
+        
+        // main matrix v2
+        ifstream infile(argv[3]);
+        string line ="";
+        int n = 0;
+        Vector_Matrix v2(size, vector<int>(size,0));
+        
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++)
+            {
+                getline(infile, line);
+                if(line != "")
+                {
+                    stringstream num(line);
+                    num >> n;
+                    v2[j][i] = n;
+                }
+            }    
+        } 
+        int stride = 0;
+        stringstream convert2(argv[5]);
+        convert2 >> stride;
+        print(Pooling(v2,pool,stride));
+        
     }
-    else if(check == "average_pooling"){
-
-    }
+    // ./main.out softmax matrix1.txt matrix1_numrows
     else if(check == "softmax"){
-
+        stringstream convert1(argv[3]);
+        int size;
+        if (!(convert1 >> size)) // do the conversion
+            size = 0; // if conversion fails, set myint to a default value
+        
+        // main matrix v2
+        ifstream infile(argv[2]);
+        string line ="";
+        int n = 0;
+        vector<float> v2(size, 0.0);
+        
+        for(int i = 0; i < size; i++){
+            getline(infile, line);
+            if(line != "")
+            {
+                stringstream num(line);
+                num >> n;
+                v2[i] = n;
+            }
+            
+        } 
+        print(softmax(v2));
     }
     else{
         cout << "None of the above functions written:" << endl;

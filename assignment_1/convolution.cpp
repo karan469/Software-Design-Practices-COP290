@@ -115,7 +115,7 @@ int main(int argc, char const *argv[])
   Vector_Matrix v1{{1,2,3},{1,2,3},{1,2,3}};
   //vector<vector<int>> v3{{3,4,5},{3,4,5},{3,4,5}};
   Vector_Matrix pad;
-  pad = convolution_pad(v2,1);
+  pad = convolution_pad(v2,0);
     print(convolution(v1,pad));
   //cout<<sub_convo(v1,v2);
   return 0;
