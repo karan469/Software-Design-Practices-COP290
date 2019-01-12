@@ -346,12 +346,37 @@ int main(int argc, char const *argv[])
         } 
         print(softmax(v2));
     }
+    // ./main.out sigmoid matrix1.txt matrix1_numrows
+    else if(check == "sigmoid"){
+        stringstream convert1(argv[3]);
+        int size;
+        if (!(convert1 >> size)) // do the conversion
+            size = 0; // if conversion fails, set myint to a default value
+        
+        // main matrix v2
+        ifstream infile(argv[2]);
+        string line ="";
+        int n = 0;
+        vector<float> v2(size, 0.0);
+        
+        for(int i = 0; i < size; i++){
+            getline(infile, line);
+            if(line != "")
+            {
+                stringstream num(line);
+                num >> n;
+                v2[i] = n;
+            }
+            
+        } 
+        print(sigmoid(v2));
+    }
     else{
         cout << "None of the above functions written:" << endl;
         cout << "'convolution_withpadding_matrixmult'" << endl;
         cout << "'convolution_withoutpadding_matrixmult'" << endl;
-        cout << "'max_pooling'" << endl;
-        cout << "'average_pooling'" << endl;
+        cout << "'pooling'" << endl;
+        cout << "'sigmoid'" << endl;
         cout << "'softmax'" << endl;
     }
     return 0;
