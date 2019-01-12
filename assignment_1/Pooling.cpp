@@ -65,6 +65,6 @@ Vector_Matrix Pooling(Vector_Matrix v1, string pool,int stride)
 int main(int argc, char const *argv[])
 {
     Vector_Matrix v1{{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6}};
-    print(Pooling(v1,"avg",2));
+    print(Pooling(v1,"min",2));
     return 0;
 }
