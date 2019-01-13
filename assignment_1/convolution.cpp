@@ -43,6 +43,74 @@ int sub_convo(Vector_Matrix v1, Vector_Matrix v2){
 //     }
 //     print(sol);
 // }
+Vector_Matrix convolution_matrixmult(Vector_Matrix v1, Vector_Matrix v2){
+    // v1: kernel
+    
+    int rows_v1 = v1.size();
+    int rows_v2 = v2.size();
+    int coloumns_v1 = v1[0].size();
+    int coloumns_v2 = v2[0].size();
+    int n = rows_v1;
+    
+    Vector_Matrix v((rows_v2-rows_v1+1),vector<int>((coloumns_v2-coloumns_v1+1),0)); //answer here
+    Vector_Matrix v_temp(n,vector<int>(n,0)); //Extraction of smaller matrix from image 
+    int columns_con_matmul= (coloumns_v2-coloumns_v1+1);
+    int rows_con_matmul = (rows_v2-rows_v1+1);
+    int col_row=columns_con_matmul*rows_con_matmul;
+
+    Vector_Matrix con_matmul(col_row, vector<int>(rows_v1*coloumns_v1,0));
+    int x_1=0,y_1=0;
+    for(int x=0;x<(rows_v2-rows_v1+1);x++){
+        for(int y=0;y<(coloumns_v2-coloumns_v1+1);y++){
+            for(int a=0;a<rows_v1;a++){
+                for(int b=0;b<coloumns_v1;b++){
+                    con_matmul[x_1][y_1] = v2[a+x][b+y];
+                    y_1++;
+                }
+            }
+            y_1 = 0;
+            x_1++;
+        }
+    }
+    int no_of_ele = rows_v1*coloumns_v1;
+    vector<int> v_templ(no_of_ele,0);
+    int count = 0;
+    for(int i = 0; i < rows_v1; i++)
+    {
+        for(int j = 0; j < coloumns_v1; j++)
+        {
+            v_templ[count] = v1[rows_v1-i-1][coloumns_v1-j-1];
+            count ++;
+        } 
+    }
+    
+    //Matrix multiplication
+    vector<int> sum(col_row,0);
+    if(no_of_ele == v_templ.size())
+    {
+        for(int i = 0; i < col_row; i++)
+        {
+            for(int j = 0; j < no_of_ele; j++)
+            {
+                sum[i]+=con_matmul[i][j]*v_templ[j];
+            }   
+        }
+    }
+    count = 0;
+    for(int i = 0; i < rows_con_matmul; i++)
+    {
+        for(int j = 0; j < columns_con_matmul; j++)
+        {
+            v[i][j] = sum[count];
+            count++;
+        }
+        
+    }
+    
+    //print(v);
+    return v;    
+}
+
 
 Vector_Matrix convolution(Vector_Matrix v1, Vector_Matrix v2){
     // v1: kernel
@@ -115,8 +183,12 @@ int main(int argc, char const *argv[])
   Vector_Matrix v1{{1,2,3},{1,2,3},{1,2,3}};
   //vector<vector<int>> v3{{3,4,5},{3,4,5},{3,4,5}};
   Vector_Matrix pad;
-  pad = convolution_pad(v2,0);
-    print(convolution(v1,pad));
+  pad = convolution_pad(v2,1);
+  print(convolution_matrixmult(v1,pad));
+
+  cout<<endl;
+
+  print(convolution(v1,pad));
   //cout<<sub_convo(v1,v2);
   return 0;
 }
