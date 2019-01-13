@@ -54,11 +54,13 @@ Vector_Matrix convolution_matrixmult(Vector_Matrix v1, Vector_Matrix v2){
     
     Vector_Matrix v((rows_v2-rows_v1+1),vector<int>((coloumns_v2-coloumns_v1+1),0)); //answer here
     Vector_Matrix v_temp(n,vector<int>(n,0)); //Extraction of smaller matrix from image 
-    int columns_con_matmul= (coloumns_v2-coloumns_v1+1);
-    int rows_con_matmul = (rows_v2-rows_v1+1);
-    int col_row=columns_con_matmul*rows_con_matmul;
+    int columns_con_matmul= (coloumns_v2-coloumns_v1+1);//Columns of answer matrix
+    int rows_con_matmul = (rows_v2-rows_v1+1);//rows of answer matrix
+    int col_row=columns_con_matmul*rows_con_matmul;//total elements
+    //col_row will become rows in con_matmul
 
     Vector_Matrix con_matmul(col_row, vector<int>(rows_v1*coloumns_v1,0));
+    //contains vectors that is to be multiplied with kernel
     int x_1=0,y_1=0;
     for(int x=0;x<(rows_v2-rows_v1+1);x++){
         for(int y=0;y<(coloumns_v2-coloumns_v1+1);y++){
@@ -71,7 +73,8 @@ Vector_Matrix convolution_matrixmult(Vector_Matrix v1, Vector_Matrix v2){
             y_1 = 0;
             x_1++;
         }
-    }
+    }\
+    //Making kernel linear
     int no_of_ele = rows_v1*coloumns_v1;
     vector<int> v_templ(no_of_ele,0);
     int count = 0;
