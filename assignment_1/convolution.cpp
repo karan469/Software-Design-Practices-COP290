@@ -176,7 +176,7 @@ Vector_Matrix convolution_pad(Vector_Matrix v2, int padding){
 //     Vector_Matrix toepMat()
 // }
 
-int main(int argc, char const *argv[])
+int main()
 {
   //int kernel = {{1,2},{2,3},{3,4}};
   Vector_Matrix v2{{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6},{1,2,3,4,5,6}};
@@ -190,5 +190,6 @@ int main(int argc, char const *argv[])
 
   print(convolution(v1,pad));
   //cout<<sub_convo(v1,v2);
+    
   return 0;
 }
