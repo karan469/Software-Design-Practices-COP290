@@ -42,13 +42,12 @@ Vector_Matrix_Float tanhMatrix(Vector_Matrix_Float v){
 }
 Vector_Matrix_Float randomVectorMatrixGenerator(int m, int n){
     Vector_Matrix_Float v(m,vector<float>(n,0));
-    // mt19937 mt(1729); //comes from #include <random>: New method for random number generation with much more distributed numbers
-    // uniform_int_distribution<int> dist(0,40);
+
     for(int i=0;i<m;i++){
         for(int j=0;j<n;j++){
             //v[i][j] = (float)(dist(mt)/3);
         
-            v[i][j] = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))*10;
+            v[i][j] = (-1^(rand()%2))*rand()%10;
         }
     }
     return v;
