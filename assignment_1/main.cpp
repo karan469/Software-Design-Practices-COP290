@@ -13,9 +13,10 @@
 #include "printHead.h"
 using namespace std;
 #define Vector_Matrix vector<vector<int>>
+#define Vector_Matrix_Float vector<vector<float>>
 
 
-Vector_Matrix conv_in_matrix(char const *argv[],int n,int m){
+Vector_Matrix conv_in_matrix(char const *argv[],int n,int m){ // argv[m] contains matrix.txt // argv[n] contains now of rows
     stringstream convert1(argv[n]);
     int size;
     if (!(convert1 >> size)) // do the conversion
@@ -40,6 +41,48 @@ Vector_Matrix conv_in_matrix(char const *argv[],int n,int m){
     }
     return v2;
 }
+
+
+
+
+
+
+
+
+
+Vector_Matrix_Float conv_in_matrix_float(char const *argv[],int n,int m){ // argv[m] contains matrix.txt // argv[n] contains now of rows
+    stringstream convert1(argv[n]);
+    int size;
+    if (!(convert1 >> size)) // do the conversion
+        size = 0; // if conversion fails, set myint to a default value
+    
+    // main matrix v2
+    ifstream infile(argv[m]);
+    string line ="";
+    Vector_Matrix_Float v2(size, vector<float>(size,0.0));
+    
+    for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++)
+        {
+            getline(infile, line);
+            if(line != "")
+            {
+                stringstream num(line);
+                num >> n;
+                v2[j][i] = (float)n;
+            }
+        }    
+    }
+    return v2;
+}
+
+
+
+
+
+
+
+
 
 int checker(char const *argv[], string forwhat)
 {
@@ -79,12 +122,32 @@ int checker(char const *argv[], string forwhat)
     }
     else if(forwhat == "sigmoid")
     {
+        //cout<<sscanf(argv[3],"%d",&n);
         if(sscanf(argv[3],"%d",&n) && argv[4]==NULL);
         else
         {
             cout<< "Wrong Syntax" << endl;
             cout<< "Expected - ";
             cout<< argv[1] << " [matrix1.txt] [matrix1_size] [stride]" << endl;
+            return 0;
+        }
+    } else if(forwhat=="tanh_activation"){
+        if(sscanf(argv[3],"%d",&n) && argv[4]==NULL);
+        else
+        {
+            cout<<"Wrong Syntax"<<endl;
+            cout<<"Expected - ";
+            cout<<argv[1]<<" [matrix1.txt] [matrix1_size]"<<endl;
+            return 0;
+        }
+    }//./main.out relu_activation matrix1.txt matrix_numrows 
+    else if(forwhat=="relu_activation"){
+        if(sscanf(argv[3],"%d",&n) && argv[4]==NULL);
+        else
+        {
+            cout<<"Wrong Syntax"<<endl;
+            cout<<"Expected - ";
+            cout<<argv[1]<<" [matrix1.txt] [matrix1_size]"<<endl;
             return 0;
         }
     }
@@ -188,23 +251,24 @@ int main(int argc, char const *argv[])
         convert2 >> fil_size;
         print(Pooling(v2,pool,fil_size));
         
-    } else if(check=="relu_activation"){
+    } //./main.out relu_activation matrix1.txt matrix_numrows
+    else if(check=="relu_activation"){
         if(!checker(argv, "relu_activation")){
             return 0;
         }
         //DO OPS HERE!!!
-
-
-
-
-
-    } else if(check=="tanh_activation"){
+        Vector_Matrix_Float v;
+        v = conv_in_matrix_float(argv,3,2);
+        print(reluMatrix(v));
+    } //./main.out tanh_activation matrix1.txt matrix_numrows 
+    else if(check=="tanh_activation"){
         if(!checker(argv, "tanh_activation")){
             return 0;
         }
         //DO OPS HERE !!
-
-
+        Vector_Matrix_Float v;
+        v = conv_in_matrix_float(argv,3,2);
+        print(tanhMatrix(v));
         
     }
     // ./main.out softmax matrix1.txt matrix1_numrows
