@@ -2,6 +2,7 @@
 
 Assignment-1: 
 Expressions being evaluated:
+                        
                         Convolution of Matrix with Padding:
                             As matrix multiplication:
                             ./main.out convolution_withpadding_matrixmult matrix1.txt matrix1_numrows matrix2.txt matrix2_numrows
@@ -23,7 +24,9 @@ Expressions being evaluated:
                         TANH Activation:
                             ./main.out tanh_activation matrix1.txt matrix1_numrows
                         
-Functions being called: Vector_Matrix convolution_matrixmult(kernel_matrix, image)
+Functions being called: 
+                        
+                        Vector_Matrix convolution_matrixmult(kernel_matrix, image)
                         Vector_Matrix convolution(kernel, image)    {If command is withPadding then image is changed by convolution_pad(image, int padding)}
                         Vector_Matrix pooling(image, flag, filesize)
                         Vector_Matrix_Float reluMatrix(image)
