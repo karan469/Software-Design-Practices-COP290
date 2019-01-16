@@ -35,7 +35,9 @@ Functions being called:
                   Vector sigmoid(vector)
                 
 Compile program: 
+                  
                   > make
                
 Clean executables:
+                  
                   > make clean
