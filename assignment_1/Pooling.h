@@ -15,7 +15,7 @@ using namespace std;
 Vector_Matrix Pooling(Vector_Matrix v1, string pool,int stride)
 {
     int size = v1.size();
-    int n = size/stride;
+    int n = (int)ceil((float)size/(float)stride);
     string max = "max";
     string avg = "avg";
     // This contains the answer
@@ -30,8 +30,10 @@ Vector_Matrix Pooling(Vector_Matrix v1, string pool,int stride)
                 int max = 0;
                 for(int l = 0; l < stride; l++){
                     for(int m = 0; m < stride; m++){
-                        if(max < v1[i+l][j+m]){
-                            max = v1[i+l][j+m];
+                        if(i+l<size && j+m<size){
+                            if(max < v1[i+l][j+m]){
+                                max = v1[i+l][j+m];
+                            }
                         }
                     }  
                 }
@@ -41,7 +43,9 @@ Vector_Matrix Pooling(Vector_Matrix v1, string pool,int stride)
                 int avg = 0;
                 for(int l = 0; l < stride; l++){
                     for(int m = 0; m < stride; m++){
-                        avg+=v1[i+l][j+m];
+                        if(i+l<size && j+m<size){
+                            avg+=v1[i+l][j+m];
+                        }
                     }  
                 }
                 ans[i/stride][j/stride] = avg/(stride*stride);
