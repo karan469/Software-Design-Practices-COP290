@@ -76,20 +76,12 @@ Vector_Matrix_Float conv_in_matrix_float(char const *argv[],int n,int m){ // arg
     return v2;
 }
 
-
-
-
-
-
-
-
-
 int checker(char const *argv[], string forwhat)
 {
     int n;
     if(forwhat == "convolution")
     {
-        if(sscanf(argv[3],"%d",&n) && sscanf(argv[5],"%d",&n) && argv[6]==NULL);
+        if(argv[3]!=NULL && sscanf(argv[3],"%d",&n) && argv[5]!=NULL && sscanf(argv[5],"%d",&n) && argv[6]==NULL);
         else 
         {
             cout<< "Wrong Syntax" << endl;
@@ -97,10 +89,24 @@ int checker(char const *argv[], string forwhat)
             cout<< argv[1] << " [matrix1.txt] [matrix1_size] [matrix2.txt] [matrix1_size]" << endl;
             return 0;
         }
+        fstream infile;
+        infile.open(argv[2]);
+        if(!infile.is_open()){
+            cout << "File given is not correct"<<endl;
+            return 0;
+        }
+        infile.close();
+        fstream infile1;
+        infile1.open(argv[4]);
+        if(!infile1.is_open()){
+            cout << "File given is not correct"<<endl;
+            return 0;
+        }
+        infile1.close();
     }
     else if(forwhat == "pooling")
     {
-        if(sscanf(argv[4],"%d",&n) && sscanf(argv[5],"%d",&n) && argv[6]==NULL);
+        if(argv[4]!=NULL && sscanf(argv[4],"%d",&n) && argv[5]!=NULL  && sscanf(argv[5],"%d",&n) && argv[6]==NULL);
         else
         {
             cout<< "Wrong Syntax" << endl;
@@ -108,10 +114,17 @@ int checker(char const *argv[], string forwhat)
             cout<< argv[1] << " [type] [matrix1.txt] [matrix1_size] [stride]" << endl;
             return 0;
         }
+        fstream infile;
+        infile.open(argv[3]);
+        if(!infile.is_open()){
+            cout << "File given is not correct"<<endl;
+            return 0;
+        }
+        infile.close();
     }
     else if(forwhat == "softmax")
     {
-        if(sscanf(argv[3],"%d",&n) && argv[4]==NULL);
+        if(argv[3]!=NULL && sscanf(argv[3],"%d",&n) && argv[4]==NULL);
         else
         {
             cout<< "Wrong Syntax" << endl;
@@ -119,11 +132,19 @@ int checker(char const *argv[], string forwhat)
             cout<< argv[1] << " [matrix1.txt] [matrix1_size] [stride]" << endl;
             return 0;
         }
+        fstream infile;
+        infile.open(argv[2]);
+        if(!infile.is_open()){
+            cout << "File given is not correct"<<endl;
+            return 0;
+        }
+
+        infile.close();
     }
     else if(forwhat == "sigmoid")
     {
         //cout<<sscanf(argv[3],"%d",&n);
-        if(sscanf(argv[3],"%d",&n) && argv[4]==NULL);
+        if(argv[3]!=NULL && sscanf(argv[3],"%d",&n) && argv[4]==NULL);
         else
         {
             cout<< "Wrong Syntax" << endl;
@@ -131,8 +152,16 @@ int checker(char const *argv[], string forwhat)
             cout<< argv[1] << " [matrix1.txt] [matrix1_size] [stride]" << endl;
             return 0;
         }
+        fstream infile;
+        infile.open(argv[2]);
+        if(!infile.is_open()){
+            cout << "File given is not correct"<<endl;
+            return 0;
+        }
+
+        infile.close();
     } else if(forwhat=="tanh_activation"){
-        if(sscanf(argv[3],"%d",&n) && argv[4]==NULL);
+        if(argv[3]!=NULL && sscanf(argv[3],"%d",&n) && argv[4]==NULL);
         else
         {
             cout<<"Wrong Syntax"<<endl;
@@ -140,9 +169,18 @@ int checker(char const *argv[], string forwhat)
             cout<<argv[1]<<" [matrix1.txt] [matrix1_size]"<<endl;
             return 0;
         }
+        fstream infile;
+        infile.open(argv[2]);
+        if(!infile.is_open()){
+            cout << "File given is not correct"<<endl;
+            return 0;
+        }
+
+        infile.close();
     }//./main.out relu_activation matrix1.txt matrix_numrows 
     else if(forwhat=="relu_activation"){
-        if(sscanf(argv[3],"%d",&n) && argv[4]==NULL);
+        
+        if(argv[3]!=NULL && sscanf(argv[3],"%d",&n) && argv[4]==NULL);
         else
         {
             cout<<"Wrong Syntax"<<endl;
@@ -150,6 +188,13 @@ int checker(char const *argv[], string forwhat)
             cout<<argv[1]<<" [matrix1.txt] [matrix1_size]"<<endl;
             return 0;
         }
+        fstream infile;
+        infile.open(argv[2]);
+        if(!infile.is_open()){
+            cout << "File given is not correct"<<endl;
+            return 0;
+        }
+        infile.close();
     }
     return 1;
 }
@@ -306,13 +351,19 @@ int main(int argc, char const *argv[])
         {
             return 0;
         }
+        
         stringstream convert1(argv[3]);
         int size;
         if (!(convert1 >> size)) // do the conversion
             size = 0; // if conversion fails, set myint to a default value
         
         // main matrix v2
-        ifstream infile(argv[2]);
+        fstream infile;
+        infile.open(argv[2]);
+        if(!infile.is_open()){
+            cout << "File given is not correct"<<endl;
+            return 0;
+        }
         string line ="";
         int n = 0;
         vector<float> v2(size, 0.0);
@@ -336,6 +387,8 @@ int main(int argc, char const *argv[])
         cout << "'pooling'" << endl;
         cout << "'sigmoid'" << endl;
         cout << "'softmax'" << endl;
+        cout << "'relu_activation'" << endl;
+        cout << "'tanh_activation'" << endl;
     }
     return 0;
 }
