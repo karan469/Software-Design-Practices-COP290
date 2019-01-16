@@ -33,3 +33,9 @@ Functions being called:
                   Vector_Matrix_Float tanhMatrix(image)
                   Vector softmax(vector)
                   Vector sigmoid(vector)
+                
+Compile program: 
+                  > make
+               
+Clean executables:
+                  > make clean
