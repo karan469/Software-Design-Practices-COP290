@@ -6,11 +6,11 @@
 #include <cmath>
 #include <fstream>
 #include <sstream>
-#include "functions.h"
-// #include "sigmoid_softmax.h"
-// #include "Pooling.h"
-// #include "relu_tanh.h"
-// #include "printHead.h"
+#include "convolution.h"
+#include "sigmoid_softmax.h"
+#include "Pooling.h"
+#include "relu_tanh.h"
+#include "printHead.h"
 using namespace std;
 #define Vector_Matrix vector<vector<int>>
 #define Vector_Matrix_Float vector<vector<float>>
@@ -255,7 +255,7 @@ int main(int argc, char const *argv[])
         int size2 = v1[0].size();
         int padding = (size2-1)/2;
         v2 = convolution_pad(v2,padding);
-        print_vector_matrix(convolution_matrixmult(v1,v2));
+        print(convolution_matrixmult(v1,v2));
     }
     else if(check == "convolution_withoutpadding_matrixmult"){
         //Read the file
@@ -283,7 +283,7 @@ int main(int argc, char const *argv[])
         int size2 = v1[0].size();
         int padding = (size2-1)/2;//optimal but not used now
         // v2 = convolution_pad(v2,padsize);
-        print_vector_matrix(convolution_matrixmult(v1,v2));
+        print(convolution_matrixmult(v1,v2));
 
     }
     // ./main.out convolution_withpadding padsize matrix1.txt matrix1_numrows matrix2.txt matrix2_numrows
@@ -307,7 +307,7 @@ int main(int argc, char const *argv[])
         Vector_Matrix v2;
         v2 = conv_in_matrix(argv,3,2);
         Vector_Matrix v1 = conv_in_matrix(argv,5,4);
-        print_vector_matrix(convolution((conv_in_matrix(argv,5,4)),(convolution_pad(v2,(((v1[0].size())-1)/2)))));
+        print(convolution((conv_in_matrix(argv,5,4)),(convolution_pad(v2,(((v1[0].size())-1)/2)))));
     }
     else if(check == "convolution_withoutpadding"){
         //Read the file
@@ -335,7 +335,7 @@ int main(int argc, char const *argv[])
         int size2 = v1[0].size();
         int padding = (size2-1)/2;//optimal but not used now
         // v2 = convolution_pad(v2,padsize);
-        print_vector_matrix(convolution(v1,v2));
+        print(convolution(v1,v2));
 
     }
     //// ./main.out pooling max matrix1.txt matrix1_numrows fil_size
@@ -364,7 +364,7 @@ int main(int argc, char const *argv[])
         int fil_size = 0;
         stringstream convert2(argv[5]);
         convert2 >> fil_size;
-        print_vector_matrix(Pooling(v2,pool,fil_size));
+        print(Pooling(v2,pool,fil_size));
         
     } //./main.out relu_activation matrix1.txt matrix_numrows
     else if(check=="relu_activation"){
@@ -382,7 +382,7 @@ int main(int argc, char const *argv[])
         //DO OPS HERE!!!
         Vector_Matrix_Float v;
         v = conv_in_matrix_float(argv,3,2);
-        print_vector_matrix_float(reluMatrix(v));
+        print(reluMatrix(v));
     } //./main.out tanh_activation matrix1.txt matrix_numrows 
     else if(check=="tanh_activation"){
         if(!checker(argv, "tanh_activation")){
@@ -399,7 +399,7 @@ int main(int argc, char const *argv[])
         //DO OPS HERE !!
         Vector_Matrix_Float v;
         v = conv_in_matrix_float(argv,3,2);
-        print_vector_matrix_float(tanhMatrix(v));
+        print(tanhMatrix(v));
         
     }
     // ./main.out softmax matrix1.txt matrix1_numrows
@@ -442,7 +442,7 @@ int main(int argc, char const *argv[])
             }
             
         } 
-        print_float_vector(softmax(v2));
+        print(softmax(v2));
     }
     // ./main.out sigmoid matrix1.txt matrix1_numrows
     else if(check == "sigmoid"){
@@ -485,7 +485,7 @@ int main(int argc, char const *argv[])
             }
             
         } 
-        print_float_vector(sigmoid(v2));
+        print(sigmoid(v2));
     }
     else{
         cout << "None of the above functions written:" << endl;
