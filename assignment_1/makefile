@@ -4,7 +4,8 @@
 # %.out: %.cpp $(DEPS)
 # 	$(CC) -c -o $@ $< $(CFLAGS)
 all: 	
-		g++ main.cpp -o main.out
+		rm -rf *o main.out
+		g++ main.cpp -std=c++11 -o main.out
 
 
 
