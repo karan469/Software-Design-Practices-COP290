@@ -271,7 +271,7 @@ int main(int argc, char const *argv[])
         convert6 >> check2;
         if(check1 < 0 || check2 < 0)
         {
-            cout << "negative numbers are not permitted; these are against mathematics" << endl;
+            cout << "Cannot be nagetive." << endl;
             return 0;
         }
         Vector_Matrix v2;
@@ -301,7 +301,7 @@ int main(int argc, char const *argv[])
         convert6 >> check2;
         if(check1 < 0 || check2 < 0)
         {
-            cout << "negative numbers are not permitted; these are against mathematics" << endl;
+            cout << "Cannot be nagetive." << endl;
             return 0;
         }
         Vector_Matrix v2;
@@ -323,7 +323,7 @@ int main(int argc, char const *argv[])
         convert6 >> check2;
         if(check1 < 0 || check2 < 0)
         {
-            cout << "negative numbers are not permitted; these are against mathematics" << endl;
+            cout << "Cannot be nagetive." << endl;
             return 0;
         }
         Vector_Matrix v2;
@@ -353,7 +353,7 @@ int main(int argc, char const *argv[])
         convert6 >> check2;
         if(check1 < 0 || check2 < 0)
         {
-            cout << "negative numbers are not permitted; these are against mathematics" << endl;
+            cout << "Cannot be nagetive." << endl;
             return 0;
         }
         string pool = "";
@@ -376,7 +376,7 @@ int main(int argc, char const *argv[])
         convert5 >> check1;
         if(check1 < 0)
         {
-            cout << "negative numbers are not permitted; these are against mathematics" << endl;
+            cout << "Cannot be nagetive." << endl;
             return 0;
         }
         //DO OPS HERE!!!
@@ -393,7 +393,7 @@ int main(int argc, char const *argv[])
         convert5 >> check1;
         if(check1 < 0)
         {
-            cout << "negative numbers are not permitted; these are against mathematics" << endl;
+            cout << "Cannot be nagetive." << endl;
             return 0;
         }
         //DO OPS HERE !!
@@ -413,7 +413,7 @@ int main(int argc, char const *argv[])
         convert5 >> check1;
         if(check1 < 0)
         {
-            cout << "negative numbers are not permitted; these are against mathematics" << endl;
+            cout << "Cannot be nagetive." << endl;
             return 0;
         }
         stringstream convert1(argv[3]);
@@ -455,7 +455,7 @@ int main(int argc, char const *argv[])
         convert5 >> check1;
         if(check1 < 0)
         {
-            cout << "negative numbers are not permitted; these are against mathematics" << endl;
+            cout << "Cannot be nagetive." << endl;
             return 0;
         }
         stringstream convert1(argv[3]);
