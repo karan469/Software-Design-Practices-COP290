@@ -27,11 +27,12 @@ Vector_Matrix Pooling(Vector_Matrix v1, string pool,int stride)
     for(int i = 0; i < size; i+=stride){
         for(int j = 0; j < size; j+=stride){
             if (pool == max) {
-                int max = 0;
+                int max = (int)(-1*2147483648);
                 for(int l = 0; l < stride; l++){
                     for(int m = 0; m < stride; m++){
                         if(i+l<size && j+m<size){
                             if(max < v1[i+l][j+m]){
+                                //int temp = max;
                                 max = v1[i+l][j+m];
                             }
                         }
