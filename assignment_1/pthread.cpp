@@ -9,7 +9,11 @@ using namespace std;
 
 // maximum size of matrix 
 #define MAX 23100
-  
+
+struct maxisize{int maxi;};
+
+struct maxisize t1 = {23100};
+
 int matA[MAX][MAX]; 
 int matB[MAX][1]; 
 int matC[MAX][1]; 
@@ -21,8 +25,8 @@ void* multi(void* arg)
     int core = step_i++; 
   
     // Each thread computes 1/4th of matrix multiplication 
-    for (int i = core * MAX / 4; i < (core + 1) * MAX / 4; i++)  
-            for (int k = 0; k < MAX; k++)  
+    for (int i = core * t1.maxi / 4; i < (core + 1) * t1.maxi / 4; i++)  
+            for (int k = 0; k < t1.maxi; k++)  
                 matC[i][0] += matA[i][k] * matB[k][0]; 
 }
 
@@ -41,12 +45,12 @@ void mult_using_pthread(int matA[][MAX], int matB[][1]){
         pthread_join(threads[i], NULL);     
   
     // Displaying the result matrix 
-    // cout << endl 
-    //      << "Multiplication of A and B" << endl; 
-    // for (int i = 0; i < MAX; i++) { 
-    //     cout << matC[i][0] << " ";         
-    //     cout << endl; 
-    // }
+    cout << endl 
+         << "Multiplication of A and B" << endl; 
+    for (int i = 0; i < t1.maxi; i++) { 
+        cout << matC[i][0] << " ";         
+        cout << endl; 
+    }
 
 }
 
@@ -60,17 +64,20 @@ auto time_pthread(int matA[][MAX], int matB[][1]){
 }
 
 
-
+// void controllerPthread(int matA[][MAX])
 
 // Driver Code 
 int main() 
 { 
-    for (int i = 0; i < MAX; i++) { 
-        for (int j = 0; j < MAX; j++) { 
+    int n = 0;
+    cin>>n;
+    t1.maxi = n;
+    for (int i = 0; i < t1.maxi; i++) { 
+        for (int j = 0; j < t1.maxi; j++) { 
             matA[i][j] = rand()%225;  
         } 
     } 
-    for(int h=0;h<MAX;h++){
+    for(int h=0;h<t1.maxi;h++){
         
         matB[h][0] = rand()%3;
         
