@@ -49,7 +49,7 @@ Vector_Matrix_Float giveOneSheet(Vector_Tetris_Float v, int rows, int coloumns, 
 	}
 }
 
-Vector_Tetris_Float layer1(Vector_Matrix_Float image){
+Vector_Tetris_Float Conv_1(Vector_Matrix_Float image){
 	kernels k;
 	int rows = image.size();
 	int coloumns = image[0].size();
@@ -64,7 +64,7 @@ Vector_Tetris_Float layer1(Vector_Matrix_Float image){
 	return v;
 }
 
-Vector_Tetris_Float layer2(Vector_Tetris_Float image3d,int rows,int coloumns){
+Vector_Tetris_Float Pool_1(Vector_Tetris_Float image3d){
 	// poolingKernel p;
 
 	Vector_Tetris_Float v(12,vector<vector<float>>(12,vector<float>(20,0.0)));
@@ -81,6 +81,40 @@ Vector_Tetris_Float layer2(Vector_Tetris_Float image3d,int rows,int coloumns){
 		}
 	}
 	return v;
+}
+
+Vector_Tetris_Float Conv_2(Vector_Tetris_Float image3d, Vector_Tetris_Float filter){
+	//image3d: 12 X 12 X 20
+	//filter: 5 X 5 X 20
+	Vector_Tetris_Float v(8,vector<vector<float>(8,vector<float>(50,0.0)));
+	v = convolution3d(image3d,filter,12,5);//convolution3d() to be made
+	return v;
+}
+
+Vector_Tetris_Float Pool_2(Vector_Tetris_Float image3d){
+	//image3d: 8 X 8 X 50
+	Vector_Tetris_Float v(4,vector<vector<float>>(4,vector<float>(50,0.0)));
+
+	Vector_Matrix_Float updatedSheet(4,vector<float>(4,0.0));
+	for(int as=0;as<50;as++){
+		updatedSheet = Pooling(giveOneSheet(image3d,8,8,as),"max",2);
+		//v = updateSheetOfTetris(image3d,rows,coloumns,as,updatedSheet);
+		//For this height 'as' changing of the sheet
+		for(int i=0;i<4;i++){
+			for(int j=0;j<4;j++){
+				v[i][j][as] = updatedSheet[i][j];
+			}
+		}
+	}
+	return v;
+}
+
+// Vector_Tetris_Float volumeConvolution(Vector_Tetris_Float image3d, int n1, Vector_Tetris_Float kernel, int n2){
+	
+// }
+
+Vector_Tetris_Float FC_1(Vector_Tetris_Float image3d, Vector_Tetris_Float filter){
+	
 }
 
 int main(int argc, char const *argv[])
