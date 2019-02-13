@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "functions.h"
+
 #define Vector_Matrix_Float vector<vector<float>>
 #define Vector_Tetris_Float vector<vector<vector<float>>>
 #define Vector_Quadris_Float vector<vector<vector<vector<float>>>>
@@ -21,9 +22,10 @@ Vector_Matrix_Float giveOneSheet(Vector_Tetris_Float v, int rows, int coloumns, 
 	for(int i=0;i<rows;i++){
 		for (int j = 0; j < coloumns; j++)
 		{
-			v1[i][j] = v[i][j][h];
+			v1[i][j] = v[h][i][j];
 		}
 	}
+	return v1;
 }
 
 Vector_Tetris_Float Conv_1(Vector_Matrix_Float image){
@@ -129,9 +131,7 @@ Vector_Tetris_Float Pool_2(Vector_Tetris_Float image3d){
 	return v;
 }
 
-Vector_Tetris_Float volumeConvolution(Vector_Tetris_Float image3d, int n1, Vector_Tetris_Float kernel, int n2){
-	
-}
+
 
 Vector_Tetris_Float FC_1(Vector_Tetris_Float image3d){
 	struct filterAndBias4d data;
