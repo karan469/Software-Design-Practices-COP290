@@ -8,15 +8,15 @@
 #define Vector_Matrix_Float vector<vector<float>>
 using namespace std;
 
-void print(Vector_Matrix v){
-    for(int i=0;i<v.size();i++){
-      for(int j=0;j<v[0].size();j++){
-          cout<<v[i][j]<<" ";
+// void print(Vector_Matrix v){
+//     for(int i=0;i<v.size();i++){
+//       for(int j=0;j<v[0].size();j++){
+//           cout<<v[i][j]<<" ";
           
-      }
-      cout<<endl;
-  }
-}
+//       }
+//       cout<<endl;
+//   }
+// }
 void print(float_Vector v){
     for(int i=0;i<v.size();i++){
       cout<<v[i]<<" ";
@@ -25,8 +25,7 @@ void print(float_Vector v){
 void print(Vector_Matrix_Float v){
     for(int i=0;i<v.size();i++){
       for(int j=0;j<v[0].size();j++){
-          cout<<v[i][j]<<" ";
-          
+          cout<<v[i][j]<<" ";  
       }
       cout<<endl;
   }
