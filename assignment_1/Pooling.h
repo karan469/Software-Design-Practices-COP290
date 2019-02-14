@@ -4,7 +4,7 @@
 #define POOLING_H
 #include <algorithm>
 #include <vector>
-#define Vector_Matrix vector<vector<int>>
+#define Vector_Matrix_Float vector<vector<float>>
 using namespace std;
 
 // max pooling and average pooling are on the same program
@@ -12,16 +12,16 @@ using namespace std;
 // assuming square matrix according to the problem statement
 
 //max pooling function
-Vector_Matrix Pooling(Vector_Matrix v1, string pool,int stride)
+Vector_Matrix_Float Pooling(Vector_Matrix_Float v1, string pool,int stride)
 {
     int size = v1.size();
-    int n = (int)ceil((float)size/(float)stride);
+    int n = (int)((float)size/(float)stride);
     string max = "max";
     string avg = "avg";
     // This contains the answer
-    Vector_Matrix ans(n,vector<int>((n),0));
+    Vector_Matrix_Float ans(n,vector<float>((n),0));
     // This contains Part to check
-    Vector_Matrix part(n,vector<int>(n,0));
+    Vector_Matrix_Float part(n,vector<float>(n,0));
 
     
     for(int i = 0; i < size; i+=stride){
@@ -32,7 +32,7 @@ Vector_Matrix Pooling(Vector_Matrix v1, string pool,int stride)
                     for(int m = 0; m < stride; m++){
                         if(i+l<size && j+m<size){
                             if(max < v1[i+l][j+m]){
-                                //int temp = max;
+                                int temp = max;
                                 max = v1[i+l][j+m];
                             }
                         }
