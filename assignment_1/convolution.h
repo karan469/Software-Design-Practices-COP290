@@ -3,10 +3,10 @@
 
 #include <algorithm>
 #include <vector>
-#define Vector_Matrix vector<vector<int>>
+#define Vector_Matrix_Float vector<vector<float>>
 using namespace std;
 
-int sub_convo(Vector_Matrix v1, Vector_Matrix v2){
+int sub_convo(Vector_Matrix_Float v1, Vector_Matrix_Float v2){
     int sum = 0;
     int n = v1[0].size();
     for(int i = 0;i<n;i++){
@@ -16,8 +16,8 @@ int sub_convo(Vector_Matrix v1, Vector_Matrix v2){
     }
     return sum;
 }
-
-Vector_Matrix convolution_matrixmult(Vector_Matrix v1, Vector_Matrix v2){
+//Harsh
+Vector_Matrix_Float convolution_matrixmult(Vector_Matrix_Float v1, Vector_Matrix_Float v2){
     // v1: kernel
     
     int rows_v1 = v1.size();
@@ -26,14 +26,14 @@ Vector_Matrix convolution_matrixmult(Vector_Matrix v1, Vector_Matrix v2){
     int coloumns_v2 = v2[0].size();
     int n = rows_v1;
     
-    Vector_Matrix v((rows_v2-rows_v1+1),vector<int>((coloumns_v2-coloumns_v1+1),0)); //answer here
-    Vector_Matrix v_temp(n,vector<int>(n,0)); //Extraction of smaller matrix from image 
+    Vector_Matrix_Float v((rows_v2-rows_v1+1),vector<float>((coloumns_v2-coloumns_v1+1),0)); //answer here
+    Vector_Matrix_Float v_temp(n,vector<float>(n,0)); //Extraction of smaller matrix from image 
     int columns_con_matmul= (coloumns_v2-coloumns_v1+1);//Columns of answer matrix
     int rows_con_matmul = (rows_v2-rows_v1+1);//rows of answer matrix
     int col_row=columns_con_matmul*rows_con_matmul;//total elements
     //col_row will become rows in con_matmul
 
-    Vector_Matrix con_matmul(col_row, vector<int>(rows_v1*coloumns_v1,0));
+    Vector_Matrix_Float con_matmul(col_row, vector<float>(rows_v1*coloumns_v1,0));
     //contains vectors that is to be multiplied with kernel
     int x_1=0,y_1=0;
     for(int x=0;x<(rows_v2-rows_v1+1);x++){
@@ -50,7 +50,7 @@ Vector_Matrix convolution_matrixmult(Vector_Matrix v1, Vector_Matrix v2){
     }\
     //Making kernel linear
     int no_of_ele = rows_v1*coloumns_v1;
-    vector<int> v_templ(no_of_ele,0);
+    vector<float> v_templ(no_of_ele,0);
     int count = 0;
     for(int i = 0; i < rows_v1; i++)
     {
@@ -62,7 +62,7 @@ Vector_Matrix convolution_matrixmult(Vector_Matrix v1, Vector_Matrix v2){
     }
     
     //Matrix multiplication
-    vector<int> sum(col_row,0);
+    vector<float> sum(col_row,0);
     if(no_of_ele == v_templ.size())
     {
         for(int i = 0; i < col_row; i++)
@@ -88,8 +88,8 @@ Vector_Matrix convolution_matrixmult(Vector_Matrix v1, Vector_Matrix v2){
     return v;    
 }
 
-
-Vector_Matrix convolution(Vector_Matrix v1, Vector_Matrix v2){
+//Karan
+Vector_Matrix_Float convolution(Vector_Matrix_Float v1, Vector_Matrix_Float v2){
     // v1: kernel
     
     int rows_v1 = v1.size();
@@ -98,8 +98,8 @@ Vector_Matrix convolution(Vector_Matrix v1, Vector_Matrix v2){
     int coloumns_v2 = v2[0].size();
     int n = rows_v1;
     
-    Vector_Matrix v((rows_v2-rows_v1+1),vector<int>((coloumns_v2-coloumns_v1+1),0)); //answer here
-    Vector_Matrix v_temp(n,vector<int>(n,0)); //Extraction of smaller matrix from image matrix
+    Vector_Matrix_Float v((rows_v2-rows_v1+1),vector<float>((coloumns_v2-coloumns_v1+1),0)); //answer here
+    Vector_Matrix_Float v_temp(n,vector<float>(n,0)); //Extraction of smaller matrix from image matrix
     
     for(int x=0;x<(coloumns_v2-coloumns_v1+1);x++){
         for(int y=0;y<(rows_v2-rows_v1+1);y++){
@@ -114,8 +114,9 @@ Vector_Matrix convolution(Vector_Matrix v1, Vector_Matrix v2){
     //print(v);
     return v;    
 }
-Vector_Matrix convolution_pad(Vector_Matrix v2, int padding){
-    Vector_Matrix pad(v2.size()+2*padding,vector<int>(v2[0].size()+2*padding,0));
+
+Vector_Matrix_Float convolution_pad(Vector_Matrix_Float v2, int padding){
+    Vector_Matrix_Float pad(v2.size()+2*padding,vector<float>(v2[0].size()+2*padding,0));
     for(int q=0;q<v2.size();q++){
         for(int w=0;w<v2[0].size();w++){
             pad[q+padding][w+padding] = v2[q][w];
