@@ -34,22 +34,39 @@ Vector_Matrix_Float giveOneSheet(Vector_Tetris_Float v, int rows, int coloumns, 
 			v1[i][j] = v[h][i][j];
 		}
 	}
-	return v1;
+	return v[h];
 }
+
+// Vector_Tetris_Float Conv_1(Vector_Matrix_Float image){
+// 	struct filterAndBias data;
+// 	data = filterBias("conv1.txt",5,20,20);
+// 	Vector_Tetris_Float v(20,vector<vector<float>>(24,vector<float>(24,0.0)));
+// 	for(int i=0;i<20;i++){
+// 		Vector_Matrix_Float tempmatrix = convolution_matrixmult_mkl(data.filter[i],image,"intelmkl");
+// 		for(int j=0;j<24;j++){
+// 			for(int k=0;k<24;k++){
+// 				v[i][j][k] = tempmatrix[j][k] + data.bias[i][0];///no use of zero
+// 			}
+// 		}
+// 	}
+
+// 	return v;
+// }
 
 Vector_Tetris_Float Conv_1(Vector_Matrix_Float image){
 	struct filterAndBias data;
 	data = filterBias("conv1.txt",5,20,20);
 	Vector_Tetris_Float v(20,vector<vector<float>>(24,vector<float>(24,0.0)));
 	for(int i=0;i<20;i++){
-		Vector_Matrix_Float tempmatrix = convolution_matrixmult_mkl(data.filter[i],image,"intelmkl");
-		for(int j=0;j<24;j++){
-			for(int k=0;k<24;k++){
-				v[i][j][k] = tempmatrix[j][k] + data.bias[i][0];///no use of zero
+		v[i] = convolution_matrixmult_mkl(data.filter[i], image, "intelmkl");
+	}
+	for(int q=0;q<20;q++){
+		for(int a=0;a<24;a++){
+			for(int b=0;b<24;b++){
+				v[q][a][b] += data.bias[q][0];
 			}
 		}
 	}
-
 	return v;
 }
 
@@ -72,6 +89,16 @@ Vector_Tetris_Float Pool_1(Vector_Tetris_Float image3d){
 	}
 	return v;
 }
+// // Second version of Pool_1 much cleaner
+// Vector_Tetris_Float Pool_1(Vector_Tetris_Float image3d){
+// 	struct filterAndBias data;
+// 	data = filterBias("conv2.txt",5,20,20);
+// 	Vector_Tetris_Float v(20,vector<vector<float>>(12,vector<float>(12,0.0)));
+// 	for(int i=0;i<20;i++){
+// 		v[i] = Pooling(image3d[i],"max",2);
+// 	}
+// 	return v;
+// }
 
 Vector_Matrix_Float addMatrices(Vector_Matrix_Float v1, Vector_Matrix_Float v2){
 	//jus adding cell by cell
@@ -316,8 +343,6 @@ vector<float> FC_Final(Vector_Tetris_Float image3d){
 	return v;
 }
 
-
-
 Vector_Matrix_Float imageFromText(string filename){
 	fstream infile;
 	infile.open(filename);
@@ -333,7 +358,7 @@ Vector_Matrix_Float imageFromText(string filename){
 			if(line!=""){
 				stringstream num(line);
 				num >> p;
-				vi[f][g] = (float)(p);//Image Normalized here <-- Check how is it actual normalization
+				vi[f][g] = 1-(float)(p/255);//Image Normalized here <-- Check how is it actual normalization
 			}
 		}
 	}
@@ -343,15 +368,15 @@ Vector_Matrix_Float imageFromText(string filename){
 vector<float> mainController(string filename){
 	Vector_Matrix_Float image(28,vector<float>(28,0.0));
 	image = imageFromText(filename);
-	return (FC_Final(FC_2(FC_1(Pool_2(Conv_2(Pool_1(Conv_1(image))))))));
+	return softmax(FC_Final(FC_2(FC_1(Pool_2(Conv_2(Pool_1(Conv_1(image))))))));
 }
 
 int main()
 {
-	//print(Conv_1(imageFromText("1_new.txt"))[0]); //testing result from Conv_1
+	print(((Conv_1(imageFromText("1_new.txt"))))[0]); //testing result from Conv_1
 
 	//print(imageFromText("1_new.txt"));//image matrix from txt
-	print(mainController("2_new.txt"));//final output
+	//print(mainController("2_new.txt"));//final output
 	cout<<endl;
 	
 	return 0;
