@@ -14,12 +14,12 @@
 using namespace std;
 
 struct filterAndBias {
-    Vector_Tetris_Float filter;
-    Vector_Matrix_Float bias;
+    vector<vector<vector<float>>> filter;
+     vector<vector<float>> bias;
 };
 struct filterAndBias4d {
-    Vector_Quadris_Float filter;
-    Vector_Matrix_Float bias;
+    vector<vector<vector<vector<float>>>> filter;
+     vector<vector<float>> bias;
 };
 struct filterAndBias filterBias(string File,int n,int m,int k){ // argv[m] contains matrix.txt // argv[n] contains now of rows
     // N = filter size
@@ -31,8 +31,8 @@ struct filterAndBias filterBias(string File,int n,int m,int k){ // argv[m] conta
         cout << "File given is not correct"<<endl;
     }
     string line ="";
-    Vector_Tetris_Float v2(k, Vector_Matrix_Float(n,vector<float>(n,0.0f)));
-    Vector_Matrix_Float v1(m,vector<float>(1,0.0f));
+    Vector_Tetris_Float v2(k, Vector_Matrix_Float(n,vector<float>(n,0.0)));
+    Vector_Matrix_Float v1(m,vector<float>(1,0.0));
     struct filterAndBias data;
     float p;
     for(int l = 0; l < k; l++){
