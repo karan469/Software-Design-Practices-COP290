@@ -8,6 +8,7 @@
 #include <ctime>
 #include <random>
 #include <chrono>
+#include <cmath>
 #define Vector_Matrix_Float vector<vector<char>>
 using namespace std;
 
@@ -37,7 +38,7 @@ void boundry(){
 
 // Returns a boundry frame of simulation
 Vector_Matrix_Float getBoundry(){
-	Vector_Matrix_Float b(10,vector<char>(30,' '));
+	Vector_Matrix_Float b(10,vector<char>(20,' '));
 	for(int i=0;i<b.size();i++){
 		for(int j=0;j<b[0].size();j++){
 			if(i*j==0 || (b.size()-1-i)*(b[0].size()-1-j)==0){
@@ -48,6 +49,14 @@ Vector_Matrix_Float getBoundry(){
 		}
 	}
 	return b;
+}
+
+Vector_Matrix_Float enableRedLight(Vector_Matrix_Float lousy){
+	Vector_Matrix_Float boundry = lousy;
+	for(int i=1;i<boundry.size()-1;i++){
+		boundry[i][boundry[0].size()-5] = '|'; // Change its colour to RED
+	}
+	return boundry;
 }
 
 // this version translates three vehicles but manually
@@ -87,10 +96,10 @@ Vector_Matrix_Float incrementVehicles(Vector_Matrix_Float lousy){
 	Vector_Matrix_Float boundry = lousy;
 	for(int i=1;i<boundry.size()-1;i++){
 		for(int j=boundry[0].size()-2;j>0;j--){
-			if(boundry[i][j]!=' '){
-				if(j+1!=boundry[0].size()-1) boundry[i][j+1] = boundry[i][j];
+			if(boundry[i][j]!=' ' && boundry[i][j+1]!='|' && boundry[i][j]!='|' && boundry[i][boundry[0].size()-6]==' '){
+				if(j+1!=boundry[0].size()-1 ) boundry[i][j+1] = boundry[i][j];
 				boundry[i][j]=' ';
-			}
+			} 
 		}
 	}
 	return boundry;
@@ -144,14 +153,15 @@ Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
 	}
 
 	// Introduce a new vehicle with (probably) probability of 50%
+	char allVehicles[] = {'T', 'C','B'};
 	for(int k=1;k<boundry.size()-1;k++){
 		if(boundry[k][1]==' ' && rand()/rand_max<0.5){
-			boundry[k][1]='0';
+			boundry[k][1]=allVehicles[(int)floor((rand()/rand_max)*3)];
 		}
 	}
 
-	// Change Lane with a probability of 90%
-	float changeLaneFrequency = 1.0;
+	// Change Lane with a probability of 95%
+	float changeLaneFrequency = 0.95;
 	for(int y=1;y<boundry.size()-1;y++){
 		for(int r=1;r<boundry[0].size()-1;r++){
 			if(checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)<=countVehiclesInLane(boundry, y-1) && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
@@ -260,9 +270,7 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 		print(boundry);
 		printf("\033c");
 		while(k>0){
-			sleep(1.5);
-			// boundry[a][k] = '0';
-			// if(k-1!=0) boundry[a][k-1] = ' '; // removing the trailing zeros
+			sleep(1);
 			cout<<"\b";
 			print(changeMap(boundry));
 			boundry = changeMap(boundry);
@@ -274,7 +282,7 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 }
 
 void controller(){
-	Vector_Matrix_Float mainframe = getBoundry();	
+	Vector_Matrix_Float mainframe = enableRedLight(getBoundry());	
 	translate(mainframe,2,1); // 1 and 1 for initial position of car
 	//translate(mainframe,2,1);
 }
@@ -288,7 +296,6 @@ int main(int argc, char const *argv[])
 	// cout<< now << endl;
 
 	controller();
-	
 
 	// Vector_Matrix_Float b = getBoundry();
 	// b[1][7] = '0';
@@ -302,4 +309,7 @@ int main(int argc, char const *argv[])
 	// print(changeMap(b));
 	// cout<<endl<<countVehiclesInLane(b,2)<<endl; // Checking the semantics of function
 	// cout<<emptyLane(b,0)<<endl;
+
+	//print(enableRedLight(getBoundry()));
+	cout << "\033[1;31mbold red text\033[0m\n";
 }
