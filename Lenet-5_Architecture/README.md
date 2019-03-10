@@ -1,14 +1,14 @@
-~lenet subdirectory
+~lenet subdirectory:
 
-{./imgsource} : all images with .png extension saved locally here
-{./conv1.txt | ./conv2.txt | ./fc1.txt | ./fc2.txt} : pretrained weights for all layers including fully connected ones
-lenet1.cpp : main file for implementing LeNet-5 Architecture
-	rotatef(): rotates the matrix about the center
-	imageFromText(string filename): Outputs image matrix
-	FC_Final(): convert 3d array to 2d array jus for the sakes of simplicity and outputting it.
-	mainController(string filename): apply all filters to the image using its filename.png
-	maxExpectations(): outputs 5 most predicted 5 softmax probabilities.
-takeFilters.h : create filters using pre-trained weighted file.
+	{./imgsource} : all images with .png extension saved locally here
+	{./conv1.txt | ./conv2.txt | ./fc1.txt | ./fc2.txt} : pretrained weights for all layers including fully connected ones
+	lenet1.cpp : main file for implementing LeNet-5 Architecture
+		rotatef(): rotates the matrix about the center
+		imageFromText(string filename): Outputs image matrix
+		FC_Final(): convert 3d array to 2d array jus for the sakes of simplicity and outputting it.
+		mainController(string filename): apply all filters to the image using its filename.png
+		maxExpectations(): outputs 5 most predicted 5 softmax probabilities.
+	takeFilters.h : create filters using pre-trained weighted file.
 
 
 ~Functions in imgProcess subdirectory
