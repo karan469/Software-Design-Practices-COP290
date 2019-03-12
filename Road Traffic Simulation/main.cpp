@@ -9,6 +9,7 @@
 #include <random>
 #include <chrono>
 #include <cmath>
+#include "./termcolor.hpp"
 #define Vector_Matrix_Float vector<vector<char>>
 using namespace std;
 
@@ -38,7 +39,7 @@ void boundry(){
 
 // Returns a boundry frame of simulation
 Vector_Matrix_Float getBoundry(){
-	Vector_Matrix_Float b(10,vector<char>(20,' '));
+	Vector_Matrix_Float b(10,vector<char>(25,' '));
 	for(int i=0;i<b.size();i++){
 		for(int j=0;j<b[0].size();j++){
 			if(i*j==0 || (b.size()-1-i)*(b[0].size()-1-j)==0){
@@ -54,7 +55,15 @@ Vector_Matrix_Float getBoundry(){
 Vector_Matrix_Float enableRedLight(Vector_Matrix_Float lousy){
 	Vector_Matrix_Float boundry = lousy;
 	for(int i=1;i<boundry.size()-1;i++){
-		boundry[i][boundry[0].size()-5] = '|'; // Change its colour to RED
+		boundry[i][15] = '|'; // Change its colour to RED
+	}
+	return boundry;
+}
+
+Vector_Matrix_Float disableRedLight(Vector_Matrix_Float lousy){
+	Vector_Matrix_Float boundry = lousy;
+	for(int i=1;i<boundry.size()-1;i++){
+		boundry[i][15] = ' ';
 	}
 	return boundry;
 }
@@ -92,18 +101,61 @@ bool emptyLane(Vector_Matrix_Float boundry, int lane){
 	return true; 
 }
 
-Vector_Matrix_Float incrementVehicles(Vector_Matrix_Float lousy){
+bool vehicleAtLight(Vector_Matrix_Float lousy, int lane){
 	Vector_Matrix_Float boundry = lousy;
+	for(int i=1;i<boundry[0].size()-1;i++){
+		if(boundry[lane][i]=='|' && boundry[lane][i-1]!=' '){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool emptyLaneInFront(Vector_Matrix_Float lousy, int a, int b){
+	int g = b+1;
+	Vector_Matrix_Float boundry = lousy;
+	while(boundry[a][g]!='|' || boundry[a][g]!='-'){
+		if(boundry[a][g]!=' '){
+			return false;
+		}
+		g++;
+	}
+	return true;
+}
+
+Vector_Matrix_Float incrementVehiclesWhenGreenLight(Vector_Matrix_Float lousy){
+	Vector_Matrix_Float boundry = lousy;
+	
+	double rand_max = RAND_MAX;
+	srand((int)time(NULL));
+
 	for(int i=1;i<boundry.size()-1;i++){
 		for(int j=boundry[0].size()-2;j>0;j--){
-			if(boundry[i][j]!=' ' && boundry[i][j+1]!='|' && boundry[i][j]!='|' && boundry[i][boundry[0].size()-6]==' '){
-				if(j+1!=boundry[0].size()-1 ) boundry[i][j+1] = boundry[i][j];
-				boundry[i][j]=' ';
-			} 
+			if(boundry[i][j]!=' ' && (boundry[i][j+1]==' ' || boundry[i][j+1]=='-')){
+				if(boundry[i][j+1]=='-'){
+					boundry[i][j]=' ';
+				} else {
+					boundry[i][j+1]=boundry[i][j];
+					boundry[i][j]=' ';
+				}
+			}
 		}
 	}
 	return boundry;
 }
+//no use till now
+// Vector_Matrix_Float incrementVehiclesWhenGreenLight(Vector_Matrix_Float lousy){
+// 	Vector_Matrix_Float boundry = lousy;
+// 	for(int i=1;i<boundry.size()-1;i++){
+// 		for(int j=boundry[0].size()-2;j>=1;j++){
+// 			if(boundry[i][j+1]==' ' && boundry[i][j]!=' ' && boundry[i][j]!='|'){
+// 				boundry[i][j+1] = boundry[i][j];
+// 				boundry[i][j] = ' ';
+// 			}
+// 		}
+// 	}
+// 	return boundry;
+// }
 
 int countVehiclesInLane(Vector_Matrix_Float lousy, int q){
 	Vector_Matrix_Float boundry = lousy;
@@ -120,7 +172,10 @@ int countVehiclesInLane(Vector_Matrix_Float lousy, int q){
 }
 
 string checkLaneChangeOptions(Vector_Matrix_Float lousy, int a, int b){
-	if(lousy[a][b]!= ' ' && lousy[a+1][b]==' ' && lousy[a-1][b]==' '){
+	if(emptyLaneInFront(lousy, a, b)==true || lousy[a][b+1]==' '){
+		return "neither";
+	}
+	else if(lousy[a][b]!= ' ' && lousy[a+1][b]==' ' && lousy[a-1][b]==' '){
 		return "both";
 	} else if(lousy[a][b]!= ' ' && lousy[a+1][b]==' ' && lousy[a-1][b]!=' '){
 		return "right";
@@ -139,29 +194,29 @@ Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
 	
 	double rand_max = RAND_MAX;
 	srand((int)time(NULL));
+	char allVehicles[] = {'T', 'C','B'};
 
 	Vector_Matrix_Float boundry = lousy;
 	
 	// Increment every vehicle in each frame
-	boundry = incrementVehicles(boundry);
+	boundry = incrementVehiclesWhenGreenLight(boundry);
 	
 	// Introduce a vehicle when lane empty
 	for(int p=1;p<boundry.size()-1;p++){
 		if(emptyLane(boundry, p)){
-			boundry[p][1]='0';
+			boundry[p][1]=' '; //changed on 02:04 pm Monday
 		}
 	}
 
-	// Introduce a new vehicle with (probably) probability of 50%
-	char allVehicles[] = {'T', 'C','B'};
+	// Introduce a new vehicle with (probably) probability of 30%
 	for(int k=1;k<boundry.size()-1;k++){
-		if(boundry[k][1]==' ' && rand()/rand_max<0.5){
+		if(boundry[k][1]==' ' && rand()/rand_max<0.3){
 			boundry[k][1]=allVehicles[(int)floor((rand()/rand_max)*3)];
 		}
 	}
 
 	// Change Lane with a probability of 95%
-	float changeLaneFrequency = 0.95;
+	float changeLaneFrequency = 1.0;
 	for(int y=1;y<boundry.size()-1;y++){
 		for(int r=1;r<boundry[0].size()-1;r++){
 			if(checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)<=countVehiclesInLane(boundry, y-1) && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
@@ -180,11 +235,72 @@ Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
 				// Go right
 				boundry[y+1][r] = boundry[y][r];
 				boundry[y][r] = ' ';
+			} else if(checkLaneChangeOptions(boundry, y, r)=="neither"){
+				boundry[y][r] = boundry[y][r];
 			}
 		}
 	}
 
 
+
+	return boundry;
+}
+
+// Change map in case of incrementing the vehicles which are not immediate on traffic light
+Vector_Matrix_Float changeMapNew(Vector_Matrix_Float lousy){
+	Vector_Matrix_Float boundry = lousy;
+	
+	double rand_max = RAND_MAX;
+	srand((int)time(NULL));
+	for(int i=1;i<boundry.size()-1;i++){
+		if(vehicleAtLight(boundry, i)==true){
+			for(int j=boundry[0].size()-2;j>0;j--){
+				if(boundry[i][j]!='|' && boundry[i][j+1]!='|'){
+					if(boundry[i][j+1]==' '){
+						boundry[i][j+1] = boundry[i][j];
+						boundry[i][j] = ' ';
+					}
+				}	
+			}
+		} else {
+			for(int j=boundry[0].size()-2;j>0;j--){
+				if(boundry[i][j]!='|' && boundry[i][j]!=' '){
+					if(boundry[i][j+1]=='-'){
+						boundry[i][j]=' ';
+					} else if(boundry[i][j+1]==' ') {
+						boundry[i][j+1]=boundry[i][j];
+						boundry[i][j]=' ';
+					}
+				}
+			}
+		}
+	}
+
+	// Change Lane with a probability of 95% // Check its semantics, i think its faulty
+	float changeLaneFrequency = 1.0;
+	for(int y=1;y<boundry.size()-1;y++){
+		for(int r=boundry[0].size()-2;r>=1;r--){
+			if(checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)<=countVehiclesInLane(boundry, y-1) && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
+				// Can go in both directions but going right because less vehicles there
+				boundry[y+1][r] = boundry[y][r];
+				boundry[y][r] = ' ';
+			} else if (checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)>countVehiclesInLane(boundry, y-1) && rand()/rand_max < changeLaneFrequency){
+				// Can go in both directions but going left because less vehicles there
+				boundry[y-1][r] = boundry[y][r];
+				boundry[y][r] = ' ';
+			} else if(checkLaneChangeOptions(boundry, y, r)=="left" && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y-1) && rand()/rand_max < changeLaneFrequency){
+				// Go left
+				boundry[y-1][r] = boundry[y][r];
+				boundry[y][r] = ' ';
+			} else if(checkLaneChangeOptions(boundry, y, r)=="right" && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
+				// Go right
+				boundry[y+1][r] = boundry[y][r];
+				boundry[y][r] = ' ';
+			} else if(checkLaneChangeOptions(boundry, y, r)=="neither"){
+				boundry[y][r] = boundry[y][r];
+			}
+		}
+	}
 
 	return boundry;
 }
@@ -197,7 +313,7 @@ Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
 // 	Vector_Matrix_Float boundry = lousy;
 
 // 	// increment evry vehicle in frame
-// 	boundry = incrementVehicles(boundry);
+// 	boundry = incrementVehiclesWhenRedLight(boundry);
 
 // 	// if empty lane introduce a vehicle
 // 	for(int q=1;q<=boundry.size()-2;q++){
@@ -266,24 +382,54 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 	if(a*b==0 || (boundry.size()-1-a)*(boundry[0].size()-1-b)==0){
 		// leave it empty
 	} else {
-		boundry[a][k] = '0';
+		boundry[a][k] = 'C';
+		printf("\033c");
+		
+		cout<<"Time frame: "<<0<<endl;
+		
 		print(boundry);
 		printf("\033c");
-		while(k>0){
-			sleep(1);
+
+		while(k<30){
+			usleep(180000);
 			cout<<"\b";
+			cout<<"Time frame: "<<k<<endl;
 			print(changeMap(boundry));
 			boundry = changeMap(boundry);
 			k++;
 			cout<<flush;
 			printf("\033c"); // disabling this will give you discrete time frames -- simple // resets the terminal
 		}
+		boundry = enableRedLight(boundry);
+		while(k<40){
+			usleep(200000);
+			cout<<"\b";
+			cout<<"Time frame: "<<k<<endl;
+			print(changeMapNew(boundry));
+			boundry = changeMapNew(boundry);
+			k++;
+			cout<<flush;
+			printf("\033c");
+		}
+		boundry = disableRedLight(boundry);
+		while(k<60){
+			usleep(200000);
+			cout<<"\b";
+			cout<<"Time frame: "<<k<<endl;
+			print(changeMap(boundry));
+			boundry = changeMap(boundry);
+			k++;
+			cout<<flush;
+			printf("\033c"); // disabling this will give you discrete time frames -- simple // resets the terminal
+		}
+		cout<<"Time frame: "<<k<<endl;
+		print(boundry);
 	}
 }
 
 void controller(){
-	Vector_Matrix_Float mainframe = enableRedLight(getBoundry());	
-	translate(mainframe,2,1); // 1 and 1 for initial position of car
+	Vector_Matrix_Float mainframe = (getBoundry());	
+	translate(mainframe,1,1); // 1 and 1 for initial position of car
 	//translate(mainframe,2,1);
 }
 
@@ -309,7 +455,11 @@ int main(int argc, char const *argv[])
 	// print(changeMap(b));
 	// cout<<endl<<countVehiclesInLane(b,2)<<endl; // Checking the semantics of function
 	// cout<<emptyLane(b,0)<<endl;
+	
 
-	//print(enableRedLight(getBoundry()));
+	// Vector_Matrix_Float asd= enableRedLight(getBoundry());
+	// print(asd);
+	// cout<<endl;
+	// print(disableRedLight(asd));
 	cout << "\033[1;31mbold red text\033[0m\n";
 }
