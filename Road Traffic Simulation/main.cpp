@@ -13,6 +13,22 @@
 #define Vector_Matrix_Float vector<vector<char>>
 using namespace std;
 
+// class VehicleMovement {
+// 	Private:
+// 	int turnstate[] = {-1,0,1};
+// 	int maxSpeed;
+// 	int speed;
+// 	Public:
+// 	void changeSpeed(int a){
+// 		speed = a;
+// 	}
+// 	void changeTurnState(int a)/*can be 1 2 or 3*/{
+		
+// 	}
+// }
+
+
+
 void print(Vector_Matrix_Float v){
     for(int i=0;i<v.size();i++){
       for(int j=0;j<v[0].size();j++){
@@ -49,6 +65,11 @@ Vector_Matrix_Float getBoundry(){
 			}
 		}
 	}
+
+	// trying to remove right boundry
+	// for(int h=1;h<b.size()-1;h++){
+	// 	if(b[h][b[0].size()-1]=='-') b[h][b[0].size()-1] =' ';
+	// }
 	return b;
 }
 
@@ -68,34 +89,11 @@ Vector_Matrix_Float disableRedLight(Vector_Matrix_Float lousy){
 	return boundry;
 }
 
-// this version translates three vehicles but manually
-// void translate(Vector_Matrix_Float boundry){
-
-// 	Vector_Matrix_Float bou = boundry;
-// 	int a=1,b=2,c=6;
-// 	bou[1][a]='0';
-// 	bou[2][b]='0';
-// 	bou[3][c]='0';
-// 	while(a<bou[0].size()-1 || b<bou[0].size()-1 || c<bou[0].size()-1){
-// 		sleep(1);
-// 		bou[1][a]='0';
-// 		bou[2][b]='0';
-// 		bou[3][c]='0';
-// 		cout<<"\b";
-// 		print(bou);
-// 		a++;
-// 		b++;
-// 		c++;
-// 		bou[1][a-1] = ' ';bou[2][b-1] = ' ';bou[3][c-1] = ' ';
-// 		cout<<flush;
-// 		//printf("\033c");
-// 	}
-// }
 
 bool emptyLane(Vector_Matrix_Float boundry, int lane){
 	if(lane<= boundry.size()-2 && lane>= 1){
 		for(int i=1;i<= boundry[lane].size()-2;i++){
-			if(boundry[lane][i] == '0') return false;
+			if(boundry[lane][i] != ' ' && boundry[lane][i]!='|') return false;
 		}
 	} else {cout<<"Crossed the boundry mate..";}
 	return true; 
@@ -112,15 +110,59 @@ bool vehicleAtLight(Vector_Matrix_Float lousy, int lane){
 }
 
 bool emptyLaneInFront(Vector_Matrix_Float lousy, int a, int b){
-	int g = b+1;
-	Vector_Matrix_Float boundry = lousy;
-	while(boundry[a][g]!='|' || boundry[a][g]!='-'){
-		if(boundry[a][g]!=' '){
-			return false;
-		}
-		g++;
+
+	if(lousy[a][15]=='|'){
+		if(b<15){
+			int count = 0;
+			for(int t=b+1;t<15;t++){
+				if(lousy[a][t]==' ') count++;
+			}
+			if(count != (15-b-1)) return false;
+		} else {
+			int count = 0;
+			for(int t=b+1;t<lousy[0].size()-1;t++){
+				if(lousy[a][t]==' ') count++;
+			}
+			if(count!=(lousy[0].size()-1-b-1)) return false;
+		}	
 	}
 	return true;
+}
+
+int lesserInLeftThanRightLane(Vector_Matrix_Float lousy, int a, int b){
+	int countLeft = 0;
+	int countRight = 0;
+
+	if(lousy[a][15]=='|'){
+		if(b<15){
+			for(int t=b+1;t<15;t++){
+				if(lousy[a-1][t]==' ') countLeft++;
+			}
+			//if(count != (15-b-1)) return false;
+		} else {
+			for(int t=b+1;t<lousy[0].size()-1;t++){
+				if(lousy[a-1][t]==' ') countLeft++;
+			}
+			//if(count!=(lousy[0].size()-1-b-1)) return false;
+		}
+	}
+
+	if(lousy[a][15]=='|'){
+		if(b<15){
+			for(int t=b+1;t<15;t++){
+				if(lousy[a+1][t]==' ') countRight++;
+			}
+			//if(count != (15-b-1)) return false;
+		} else {
+			for(int t=b+1;t<lousy[0].size()-1;t++){
+				if(lousy[a+1][t]==' ') countRight++;
+			}
+			//if(count!=(lousy[0].size()-1-b-1)) return false;
+		}
+	}
+	if(countRight<countLeft) return 1;
+	else if(countRight==countLeft) return -1;
+	return 0;
 }
 
 Vector_Matrix_Float incrementVehiclesWhenGreenLight(Vector_Matrix_Float lousy){
@@ -131,7 +173,7 @@ Vector_Matrix_Float incrementVehiclesWhenGreenLight(Vector_Matrix_Float lousy){
 
 	for(int i=1;i<boundry.size()-1;i++){
 		for(int j=boundry[0].size()-2;j>0;j--){
-			if(boundry[i][j]!=' ' && (boundry[i][j+1]==' ' || boundry[i][j+1]=='-')){
+			if(boundry[i][j]!=' ' && (boundry[i][j+1]==' ' || boundry[i][j+1]=='-') && rand()/rand_max<0.9){
 				if(boundry[i][j+1]=='-'){
 					boundry[i][j]=' ';
 				} else {
@@ -143,19 +185,6 @@ Vector_Matrix_Float incrementVehiclesWhenGreenLight(Vector_Matrix_Float lousy){
 	}
 	return boundry;
 }
-//no use till now
-// Vector_Matrix_Float incrementVehiclesWhenGreenLight(Vector_Matrix_Float lousy){
-// 	Vector_Matrix_Float boundry = lousy;
-// 	for(int i=1;i<boundry.size()-1;i++){
-// 		for(int j=boundry[0].size()-2;j>=1;j++){
-// 			if(boundry[i][j+1]==' ' && boundry[i][j]!=' ' && boundry[i][j]!='|'){
-// 				boundry[i][j+1] = boundry[i][j];
-// 				boundry[i][j] = ' ';
-// 			}
-// 		}
-// 	}
-// 	return boundry;
-// }
 
 int countVehiclesInLane(Vector_Matrix_Float lousy, int q){
 	Vector_Matrix_Float boundry = lousy;
@@ -172,19 +201,16 @@ int countVehiclesInLane(Vector_Matrix_Float lousy, int q){
 }
 
 string checkLaneChangeOptions(Vector_Matrix_Float lousy, int a, int b){
-	if(emptyLaneInFront(lousy, a, b)==true || lousy[a][b+1]==' '){
-		return "neither";
+	
+	if(lousy[a][b]!=' ' || lousy[a][b]!='|')
+	{	if(emptyLaneInFront(lousy,a,b)==1){return "neither";}
+		else if(lesserInLeftThanRightLane(lousy,a,b)==1){return "left";}
+		else if(lesserInLeftThanRightLane(lousy,a,b)==0){return "right";}
+		else if(lesserInLeftThanRightLane(lousy,a,b)==-1){return "neither";}
+		else if(lousy[a+1][b]==' ' && lousy[a-1][b]!=' '){return "right";}
+		else if(lousy[a+1][b]!=' ' && lousy[a-1][b]==' '){return "left";}
 	}
-	else if(lousy[a][b]!= ' ' && lousy[a+1][b]==' ' && lousy[a-1][b]==' '){
-		return "both";
-	} else if(lousy[a][b]!= ' ' && lousy[a+1][b]==' ' && lousy[a-1][b]!=' '){
-		return "right";
-	} else if(lousy[a][b]!= ' ' && lousy[a+1][b]!=' ' && lousy[a-1][b]==' '){
-		return "left";
-	} else {
-		return "neither";
-	}
-	return "neither";
+	return "left";
 }
 
 Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
@@ -208,9 +234,9 @@ Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
 		}
 	}
 
-	// Introduce a new vehicle with (probably) probability of 30%
+	// Introduce a new vehicle with (probably) probability of 15%
 	for(int k=1;k<boundry.size()-1;k++){
-		if(boundry[k][1]==' ' && rand()/rand_max<0.3){
+		if(boundry[k][1]==' ' && rand()/rand_max<0.15){
 			boundry[k][1]=allVehicles[(int)floor((rand()/rand_max)*3)];
 		}
 	}
@@ -305,76 +331,6 @@ Vector_Matrix_Float changeMapNew(Vector_Matrix_Float lousy){
 	return boundry;
 }
 
-// Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
-// 	std::random_device rd;
-// 	std::mt19937 gen(rd());
-// 	std::uniform_real_distribution<> dis(0, 1);
-
-// 	Vector_Matrix_Float boundry = lousy;
-
-// 	// increment evry vehicle in frame
-// 	boundry = incrementVehiclesWhenRedLight(boundry);
-
-// 	// if empty lane introduce a vehicle
-// 	for(int q=1;q<=boundry.size()-2;q++){
-// 		if(emptyLane(boundry, q)==true && dis(gen)<0.9){
-// 			boundry[q][1] = '0';
-// 		}
-// 	}
-	
-// 	//introduce a new vehicle adjesant to front vehicle with 30% probability
-// 	// for(int a=0;a<boundry.size();a++){
-// 	// 	if(boundry[a][2]=='0' && dis(gen)<0.3){
-// 	// 		boundry[a][1]='0';
-// 	// 	}
-// 	// }
-
-// 	//with 50% probability, if 1/3rd row is empty(not the whole lane) then introduce a new vehicle.
-// 	if(dis(gen)<0.7){
-// 		int tempCount = 0;
-// 		int tempCount1 = 0;
-// 		int tempCount2 = (rand()%(boundry.size()-2)); //random lane
-// 		for(int h=1;h<(boundry[0].size()/4)+1;h++){
-// 			if(boundry[tempCount2][h]==' ') tempCount++;
-// 			tempCount1++;
-// 		}
-// 		if(tempCount==tempCount1 && emptyLane(boundry, tempCount2)==false){
-// 			boundry[tempCount2][1] = '0';
-// 		}
-// 	} else {
-// 		//introduce a new vehicle adjesant to front vehicle with 30%/100% probability
-// 		for(int a=0;a<boundry.size();a++){
-// 			if(boundry[a][2]=='0' ){
-// 				boundry[a][1]='0';
-// 			}
-// 		}
-// 	}
-
-// 	// insert probability of having a clear lane (very less)
-// 	// takeover
-// 	// change Lanes
-// 	// speed high
-// 	return boundry;
-// }
-
-// this version moves only one vehicle --> ideal function
-// void translate(Vector_Matrix_Float boundry, int a, int b){
-// 	int k = b;
-// 	if(a*b==0 || (boundry.size()-1-a)*(boundry[0].size()-1-b)==0){
-// 		// leave it empty
-// 	} else {
-// 		while(k>0){
-// 			sleep(1);
-// 			boundry[a][k] = '0';
-// 			if(k-1!=0) boundry[a][k-1] = ' '; // removing the trailing zeros
-// 			cout<<"\b";
-// 			print(boundry);
-// 			k++;	
-// 			cout<<flush;
-// 			// printf("\033c"); // disabling this will give you discrete time frames -- simple // resets the terminal
-// 		}
-// 	}
-// }
 
 // this version moves only one vehicle --> ideal function version 2.0
 void translate(Vector_Matrix_Float boundry, int a, int b){
@@ -383,7 +339,6 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 		// leave it empty
 	} else {
 		boundry[a][k] = 'C';
-		printf("\033c");
 		
 		cout<<"Time frame: "<<0<<endl;
 		
@@ -402,7 +357,7 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 		}
 		boundry = enableRedLight(boundry);
 		while(k<40){
-			usleep(200000);
+			usleep(180000);
 			cout<<"\b";
 			cout<<"Time frame: "<<k<<endl;
 			print(changeMapNew(boundry));
@@ -412,7 +367,7 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 			printf("\033c");
 		}
 		boundry = disableRedLight(boundry);
-		while(k<60){
+		while(k>0){
 			usleep(200000);
 			cout<<"\b";
 			cout<<"Time frame: "<<k<<endl;
@@ -458,8 +413,19 @@ int main(int argc, char const *argv[])
 	
 
 	// Vector_Matrix_Float asd= enableRedLight(getBoundry());
+	// asd[4][4]='T';
+	// asd[4][10]='C';
+	// asd[4][17]='B';
+	// asd[5][7] = 'B';
+	// asd[5][6] = 'T';
+	// asd[3][13] = 'B';
 	// print(asd);
 	// cout<<endl;
+	// cout<<emptyLaneInFront(asd,4,17)<<endl;
+	// cout<<lesserInLeftThanRightLane(asd,4,17)<<endl;
+
 	// print(disableRedLight(asd));
+
+
 	cout << "\033[1;31mbold red text\033[0m\n";
 }
