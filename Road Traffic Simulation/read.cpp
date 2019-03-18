@@ -36,6 +36,7 @@ struct vehicle car;
 struct vehicle bike;
 struct vehicle truck;
 struct vehicle bus;
+vector<string> Instrs(1024,"");
 Instr *startin = new Instr; 
 Instr *Lastin = startin;
 struct road roadspec;
@@ -51,6 +52,7 @@ void nextline(string filename)
     fstream infile;
     infile.open(filename);
     string line ="";
+    int count = 0; 
     if (infile.is_open())
     {   
         while(getline(infile,line)){    
@@ -62,66 +64,80 @@ void nextline(string filename)
                 p = simm.str();
                 if (p=="START") {
                     while(getline(infile,line)){
-                        Instr *lastin = NULL;
-                        lastin=new Instr;
-                        if (c==0){startin = lastin;}
+                        // Instr *lastin = NULL;
+                        // lastin=new Instr;
+                        // if (c==0){startin = lastin;}
                         regex_search(line,simm,sim);
                         p = simm.str();
                         if (p.substr(0,6)=="Signal") {
-                            lastin->instr = p.substr(0,6);
-                            lastin->signal = p.substr(7);
-                            Lastin = lastin;
-                            cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
-                            Lastin = Lastin->next;
+                            // lastin->instr = p.substr(0,6);
+                            // lastin->signal = p.substr(7);
+                            // Lastin = lastin;
+                            // cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
+                            // Lastin = Lastin->next;
+                            Instrs[count] = p;
+                            count++;
                             // Lastin = new Instr;
                         }
                         else if (p.substr(0,3)=="Car")
                         {
-                            lastin->instr = p.substr(0,3);
-                            lastin->signal = p.substr(4);
-                            Lastin = lastin;
-                            cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
-                            Lastin = Lastin->next;
+                            // lastin->instr = p.substr(0,3);
+                            // lastin->signal = p.substr(4);
+                            // Lastin = lastin;
+                            // cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
+                            // Lastin = Lastin->next;
+                            Instrs[count] = p;
+                            count++;
                             // Lastin = new Instr;
                         }
                         else if (p.substr(0,4)=="bike")
                         {
-                            lastin->instr = p.substr(0,4);
-                            lastin->signal = p.substr(5);
-                            Lastin = lastin;
-                            cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
-                            Lastin = Lastin->next;
+                            // lastin->instr = p.substr(0,4);
+                            // lastin->signal = p.substr(5);
+                            // Lastin = lastin;
+                            // cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
+                            // Lastin = Lastin->next;
+                            Instrs[count] = p;
+                            count++;
                             // Lastin = new Instr;
                         }
                         else if (p.substr(0,3)=="Bus")
                         {
-                            lastin->instr = p.substr(0,3);
-                            lastin->signal = p.substr(4);
-                            Lastin = lastin;
-                            cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
-                            Lastin = Lastin->next;
+                            // lastin->instr = p.substr(0,3);
+                            // lastin->signal = p.substr(4);
+                            // Lastin = lastin;
+                            // cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
+                            // Lastin = Lastin->next;
+                            Instrs[count] = p;
+                            count++;
                             // Lastin = new Instr;
                         }
                         else if (p.substr(0,5)=="Truck")
                         {
-                            lastin->instr = p.substr(0,5);
-                            lastin->signal = p.substr(6);
-                            Lastin = lastin;
-                            cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
-                            Lastin = Lastin->next;
+                            // lastin->instr = p.substr(0,5);
+                            // lastin->signal = p.substr(6);
+                            // Lastin = lastin;
+                            // cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
+                            // Lastin = Lastin->next;
+                            Instrs[count] = p;
+                            count++;
                             // Lastin = new Instr;
                         }
                         else if (p.substr(0,4)=="Pass")
                         {
-                            lastin->instr = p.substr(0,4);
-                            lastin->time = stof(p.substr(5));
-                            Lastin = lastin;
-                            cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
-                            Lastin = Lastin->next;
+                        //     lastin->instr = p.substr(0,4);
+                        //     lastin->time = stof(p.substr(5));
+                        //     Lastin = lastin;
+                        //     cout<<"eles"<<lastin->instr<<" "<<lastin->signal<<" "<<lastin->time<< endl;
+                        //     Lastin = Lastin->next;
+                            Instrs[count] = p;
+                            count++;
                             // Lastin = new Instr;
                         }
                         else if (p=="END")
                         {
+                            Instrs[count] = p;
+                            count++;
                             break;                                
                         }
                     }
@@ -283,6 +299,11 @@ int main(int argc, char const *argv[])
     cout << bus.type << bus.acc << bus.maxspeed << bus.length << bus.width<<endl;
 
     nextline("./config.ini");
+    for(int i = 0; i < 1024; i++)
+    {
+        cout << Instrs[i]<<endl;
+    }
+    
     return 0;
 }
 
