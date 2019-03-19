@@ -9,22 +9,29 @@
 #include <random>
 #include <chrono>
 #include <cmath>
+#include "read.h"
+
+#include <GL/glut.h>
+#include <GL/glu.h>
+#include <GL/gl.h>
 #define Vector_Matrix_Float vector<vector<char>>
 using namespace std;
 
-// class VehicleMovement {
-// 	Private:
-// 	int turnstate[] = {-1,0,1};
-// 	int maxSpeed;
-// 	int speed;
-// 	Public:
-// 	void changeSpeed(int a){
-// 		speed = a;
-// 	}
-// 	void changeTurnState(int a)/*can be 1 2 or 3*/{
-		
-// 	}
-// }
+class carDetails{
+	int maxSpeed;
+	int speed;
+	int acceleration;
+};
+class busDetails{
+	int maxSpeed;
+	int speed;
+	int acceleration;
+};
+class bikeDetails {
+	int maxSpeed;
+	int speed;
+	int acceleration;
+};
 
 
 
@@ -53,8 +60,8 @@ void boundry(){
 }
 
 // Returns a boundry frame of simulation
-Vector_Matrix_Float getBoundry(){
-	Vector_Matrix_Float b(10,vector<char>(25,' '));
+Vector_Matrix_Float getBoundry(int rows, int coloumns){
+	Vector_Matrix_Float b(rows,vector<char>(coloumns,' '));
 	for(int i=0;i<b.size();i++){
 		for(int j=0;j<b[0].size();j++){
 			if(i*j==0 || (b.size()-1-i)*(b[0].size()-1-j)==0){
@@ -123,7 +130,7 @@ bool emptyLaneInFront(Vector_Matrix_Float lousy, int a, int b){
 				if(lousy[a][t]==' ') count++;
 			}
 			if(count!=(lousy[0].size()-1-b-1)) return false;
-		}	
+		}
 	}
 	return true;
 }
@@ -164,21 +171,54 @@ int lesserInLeftThanRightLane(Vector_Matrix_Float lousy, int a, int b){
 	return 0;
 }
 
+string typeOfVehicle(char ass){
+	if(ass=='C'){return "car";}
+	else if(ass=='B'){return "bike";}
+	else {return "truck";}
+	return "neither";
+}
+
+//for speed management of bike
+bool checkLaneForLength(Vector_Matrix_Float lousy, int a, int b, int t){
+	for(int i=b+1;i<t+1;i++){
+		if(lousy[a][i]!=' '){
+			return false;
+		}
+	}
+	return true;
+}
+
 Vector_Matrix_Float incrementVehiclesWhenGreenLight(Vector_Matrix_Float lousy){
 	Vector_Matrix_Float boundry = lousy;
 	
 	double rand_max = RAND_MAX;
 	srand((int)time(NULL));
 
+	int drake = 1;
 	for(int i=1;i<boundry.size()-1;i++){
 		for(int j=boundry[0].size()-2;j>0;j--){
-			if(boundry[i][j]!=' ' && (boundry[i][j+1]==' ' || boundry[i][j+1]=='-') && rand()/rand_max<0.9){
-				if(boundry[i][j+1]=='-'){
-					boundry[i][j]=' ';
-				} else {
-					boundry[i][j+1]=boundry[i][j];
-					boundry[i][j]=' ';
-				}
+			// if(typeOfVehicle(boundry[i][j])=="bike"){
+			// 	if(checkLaneForLength(boundry, i, j, bike.maxspeed)==true){
+			// 		if(boundry[i][j+1]=='-'){
+			// 			boundry[i][j]=' ';
+			// 		} else {
+			// 			boundry[i][j+bike.maxspeed]=boundry[i][j];
+			// 			boundry[i][j]=' ';
+			// 		}
+			// 	}
+			// }
+
+			// if(typeOfVehicle(boundry[i][j])=="bike"){drake = bike.maxspeed ;}
+			// else if(typeOfVehicle(boundry[i][j])=="car"){drake = car.maxspeed;}
+			// else if(typeOfVehicle(boundry[i][j])=="truck"){drake = bus.maxspeed;}
+			if(boundry[i][j]!=' ' && (boundry[i][j+1]==' ' || boundry[i][j+1]=='-') && rand()/rand_max<0.9 && boundry[i][j]!='#'){
+				
+					if(boundry[i][j+1]=='-'){
+						boundry[i][j]=' ';
+					} else {
+						boundry[i][j+1]=boundry[i][j];
+						boundry[i][j]=' ';
+					}
 			}
 		}
 	}
@@ -212,6 +252,18 @@ string checkLaneChangeOptions(Vector_Matrix_Float lousy, int a, int b){
 	return "left";
 }
 
+bool goLeftOrNot(Vector_Matrix_Float lousy, int a, int b){
+	int count1 = 0;
+	int count2 = 0;
+	for(int i=0;i<5;i++){
+		if(lousy[a-1][b+i]==' '){count1++;}
+	}
+	for(int j=0;j<5;j++){
+		if(lousy[a+1][b+j]==' '){count2++;}
+	}
+	return (count1<count2) ? true : false;
+}
+
 Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -227,15 +279,15 @@ Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
 	boundry = incrementVehiclesWhenGreenLight(boundry);
 	
 	// Introduce a vehicle when lane empty
-	for(int p=1;p<boundry.size()-1;p++){
-		if(emptyLane(boundry, p)){
-			boundry[p][1]=' '; //changed on 02:04 pm Monday
-		}
-	}
+	// for(int p=1;p<boundry.size()-1;p++){
+	// 	if(emptyLane(boundry, p)){
+	// 		boundry[p][1]=' '; //changed on 02:04 pm Monday
+	// 	}
+	// }
 
 	// Introduce a new vehicle with (probably) probability of 15%
 	for(int k=1;k<boundry.size()-1;k++){
-		if(boundry[k][1]==' ' && rand()/rand_max<0.15){
+		if(boundry[k][1]==' ' && rand()/rand_max<0.15 && (boundry[k][2]!=' ' || boundry[k][3]==' ') && countVehiclesInLane(boundry,k)<(boundry[k].size()/4)/*last condition is to limit no. of vehicles in lane*/){
 			boundry[k][1]=allVehicles[(int)floor((rand()/rand_max)*3)];
 		}
 	}
@@ -244,25 +296,16 @@ Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy){
 	float changeLaneFrequency = 1.0;
 	for(int y=1;y<boundry.size()-1;y++){
 		for(int r=1;r<boundry[0].size()-1;r++){
-			if(checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)<=countVehiclesInLane(boundry, y-1) && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
-				// Can go in both directions but going right because less vehicles there
-				boundry[y+1][r] = boundry[y][r];
-				boundry[y][r] = ' ';
-			} else if (checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)>countVehiclesInLane(boundry, y-1) && rand()/rand_max < changeLaneFrequency){
-				// Can go in both directions but going left because less vehicles there
-				boundry[y-1][r] = boundry[y][r];
-				boundry[y][r] = ' ';
-			} else if(checkLaneChangeOptions(boundry, y, r)=="left" && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y-1) && rand()/rand_max < changeLaneFrequency){
-				// Go left
-				boundry[y-1][r] = boundry[y][r];
-				boundry[y][r] = ' ';
-			} else if(checkLaneChangeOptions(boundry, y, r)=="right" && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
-				// Go right
-				boundry[y+1][r] = boundry[y][r];
-				boundry[y][r] = ' ';
-			} else if(checkLaneChangeOptions(boundry, y, r)=="neither"){
-				boundry[y][r] = boundry[y][r];
+			if(rand()/rand_max <0.3 ){// 30% probability of Lane change
+				
+				//accident with 7% probabilty
+				if(rand()/rand_max<0.07 && boundry[y][r]!=' ' && boundry[y][r]!= '|' && boundry[y-1][r]!=' ' && boundry[y-1][r]!= '|'){boundry[y][r]=' ';boundry[y-1][r]='#';}
+				
+
+				if(boundry[y][r]!=' ' && boundry[y][r]!= '|' && boundry[y-1][r]==' ' && rand()/rand_max<0.3 && boundry[y][r]!='#') {boundry[y-1][r] = boundry[y][r];boundry[y][r]=' ';}
+				else if(boundry[y][r]!=' ' && boundry[y][r]!='|' && boundry[y+1][r]==' ' && goLeftOrNot(boundry,y,r)==false && boundry[y][r]!='#') {boundry[y+1][r] = boundry[y][r];boundry[y][r]=' ';}	
 			}
+			
 		}
 	}
 
@@ -280,7 +323,7 @@ Vector_Matrix_Float changeMapNew(Vector_Matrix_Float lousy){
 	for(int i=1;i<boundry.size()-1;i++){
 		if(vehicleAtLight(boundry, i)==true){
 			for(int j=boundry[0].size()-2;j>0;j--){
-				if(boundry[i][j]!='|' && boundry[i][j+1]!='|'){
+				if(boundry[i][j]!='|' && boundry[i][j+1]!='|' && boundry[i][j]!='#'){
 					if(boundry[i][j+1]==' '){
 						boundry[i][j+1] = boundry[i][j];
 						boundry[i][j] = ' ';
@@ -289,7 +332,7 @@ Vector_Matrix_Float changeMapNew(Vector_Matrix_Float lousy){
 			}
 		} else {
 			for(int j=boundry[0].size()-2;j>0;j--){
-				if(boundry[i][j]!='|' && boundry[i][j]!=' '){
+				if(boundry[i][j]!='|' && boundry[i][j]!=' ' && boundry[i][j]!='#'){
 					if(boundry[i][j+1]=='-'){
 						boundry[i][j]=' ';
 					} else if(boundry[i][j+1]==' ') {
@@ -305,25 +348,35 @@ Vector_Matrix_Float changeMapNew(Vector_Matrix_Float lousy){
 	float changeLaneFrequency = 1.0;
 	for(int y=1;y<boundry.size()-1;y++){
 		for(int r=boundry[0].size()-2;r>=1;r--){
-			if(checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)<=countVehiclesInLane(boundry, y-1) && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
-				// Can go in both directions but going right because less vehicles there
-				boundry[y+1][r] = boundry[y][r];
-				boundry[y][r] = ' ';
-			} else if (checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)>countVehiclesInLane(boundry, y-1) && rand()/rand_max < changeLaneFrequency){
-				// Can go in both directions but going left because less vehicles there
-				boundry[y-1][r] = boundry[y][r];
-				boundry[y][r] = ' ';
-			} else if(checkLaneChangeOptions(boundry, y, r)=="left" && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y-1) && rand()/rand_max < changeLaneFrequency){
-				// Go left
-				boundry[y-1][r] = boundry[y][r];
-				boundry[y][r] = ' ';
-			} else if(checkLaneChangeOptions(boundry, y, r)=="right" && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
-				// Go right
-				boundry[y+1][r] = boundry[y][r];
-				boundry[y][r] = ' ';
-			} else if(checkLaneChangeOptions(boundry, y, r)=="neither"){
-				boundry[y][r] = boundry[y][r];
+			if(rand()/rand_max <0.3 ){// 30% probability of Lane change
+				
+				//accident with 20% probabilty
+				if(rand()/rand_max<0.2 && boundry[y][r]!=' ' && boundry[y][r]!= '|' && boundry[y-1][r]!=' ' && boundry[y-1][r]!= '|'){boundry[y][r]=' ';boundry[y-1][r]='#';}
+				
+
+				if(boundry[y][r]!=' ' && boundry[y][r]!= '|' && boundry[y-1][r]==' ' && rand()/rand_max<0.3 && boundry[y][r]!='#') {boundry[y-1][r] = boundry[y][r];boundry[y][r]=' ';}
+				else if(boundry[y][r]!=' ' && boundry[y][r]!='|' && boundry[y+1][r]==' ' && goLeftOrNot(boundry,y,r)==false && boundry[y][r]!='#') {boundry[y+1][r] = boundry[y][r];boundry[y][r]=' ';}	
 			}
+
+			// if(checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)<=countVehiclesInLane(boundry, y-1) && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
+			// 	// Can go in both directions but going right because less vehicles there
+			// 	boundry[y+1][r] = boundry[y][r];
+			// 	boundry[y][r] = ' ';
+			// } else if (checkLaneChangeOptions(boundry, y, r)=="both" && countVehiclesInLane(boundry, y+1)>countVehiclesInLane(boundry, y-1) && rand()/rand_max < changeLaneFrequency){
+			// 	// Can go in both directions but going left because less vehicles there
+			// 	boundry[y-1][r] = boundry[y][r];
+			// 	boundry[y][r] = ' ';
+			// } else if(checkLaneChangeOptions(boundry, y, r)=="left" && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y-1) && rand()/rand_max < changeLaneFrequency){
+			// 	// Go left
+			// 	boundry[y-1][r] = boundry[y][r];
+			// 	boundry[y][r] = ' ';
+			// } else if(checkLaneChangeOptions(boundry, y, r)=="right" && countVehiclesInLane(boundry, y)<=countVehiclesInLane(boundry, y+1) && rand()/rand_max < changeLaneFrequency){
+			// 	// Go right
+			// 	boundry[y+1][r] = boundry[y][r];
+			// 	boundry[y][r] = ' ';
+			// } else if(checkLaneChangeOptions(boundry, y, r)=="neither"){
+			// 	boundry[y][r] = boundry[y][r];
+			// }
 		}
 	}
 
@@ -381,21 +434,34 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 	}
 }
 
-void controller(){
-	Vector_Matrix_Float mainframe = (getBoundry());	
+void controller(int rows, int coloumns){
+	Vector_Matrix_Float mainframe = (getBoundry(rows, coloumns));	
 	translate(mainframe,1,1); // 1 and 1 for initial position of car
 	//translate(mainframe,2,1);
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
 	//boundry(); // displays boundry
 	
 	// time_t now = time(0);
 	// tm* localtm = localtime(&now);
 	// cout<< now << endl;
+	string uID = "a1011";
+	int roadLength = 10;
+	int roadWidth = 25;
 
-	controller();
+
+	controller(roadLength,roadWidth);
+
+
+   // glutInit(&argc, argv);                 // Initialize GLUT
+   // glutCreateWindow("OpenGL Setup Test"); // Create a window with the given title
+   // glutInitWindowSize(320, 320);   // Set the window's initial width & height
+   // glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
+   // glutDisplayFunc(display); // Register display callback handler for window re-paint
+   // glutMainLoop();
+
 
 	// Vector_Matrix_Float b = getBoundry();
 	// b[1][7] = '0';
@@ -426,5 +492,5 @@ int main(int argc, char const *argv[])
 	// print(disableRedLight(asd));
 
 
-	cout << "\033[1;31mbold red text\033[0m\n";
+	//cout << "\033[1;31mbold red text\033[0m\n";
 }
