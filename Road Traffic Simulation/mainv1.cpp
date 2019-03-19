@@ -60,15 +60,15 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 		// leave it empty
 	} else {
 		// boundry[a][k] = '';
-		vehicle d = vehicle();
-		d.y=1;
-		d.type="<BB>";
-		d.updatelen();
-		d.maxspeed = 1.0;
-		d.v=1.0;
-		d.a=.1;
+		// vehicle d = vehicle();
+		// d.y=1;
+		// d.type="<BB>";
+		// d.updatelen();
+		// d.maxspeed = 1.0;
+		// d.v=1.0;
+		// d.a=.1;
 
-		objs.push_back(d);
+		// objs.push_back(d);
 
 		cout<<"Time frame: "<<k<<endl;
 		
@@ -85,17 +85,17 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 			cout<<flush;
 			printf("\033c"); // disabling this will give you discrete time frames -- simple // resets the terminal
 		}
-		vehicle p = vehicle();
-		p.y=1;
-		p.type="<C>";
-		p.updatelen();
-		p.maxspeed = 2.0;
-		p.v=1.0;
-		p.a=.1;
+		// vehicle p = vehicle();
+		// p.y=1;
+		// p.type="<C>";
+		// p.updatelen();
+		// p.maxspeed = 2.0;
+		// p.v=1.0;
+		// p.a=.1;
 
-		objs.push_back(p);
+		// objs.push_back(p);
 		boundry = enableRedLight(boundry);
-		while(k<=30){
+		while(k<=50){
 			usleep(180000);
 			cout<<"\b";
 			cout<<"Time frame: "<<k<<endl;
@@ -106,7 +106,7 @@ void translate(Vector_Matrix_Float boundry, int a, int b){
 			printf("\033c"); // disabling this will give you discrete time frames -- simple // resets the terminal
 		}
 		boundry = disableRedLight(boundry);
-		while(k<=50){
+		while(k<=70){
 			usleep(180000);
 			cout<<"\b";
 			cout<<"Time frame: "<<k<<endl;

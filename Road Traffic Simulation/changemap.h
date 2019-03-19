@@ -32,9 +32,10 @@ Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy,bool red){
 
 	// Introduce a new vehicle with (probably) probability of 15%
 	for(int k=1;k<boundry.size()-1;k++){
-		if(not(red)&&boundry[k][1]==' ')
+		if(boundry[k][1]==' ')
 		{
-			if(boundry[k][1]==' ' && rand()/rand_max<0.05){	
+			// cout << "gone"<<endl;
+			if(boundry[k][1]==' ' && rand()/rand_max<0.07){	
 				int c = (int)floor((rand()/rand_max)*4);
 				vehicle p = vehicle();
 				p.type = allVehicles[c];
