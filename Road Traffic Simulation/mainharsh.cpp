@@ -9,6 +9,7 @@
 #include <random>
 #include <chrono>
 #include <cmath>
+#include "vehicle.h"
 #define Vector_Matrix_Float vector<vector<char>>
 using namespace std;
 
@@ -95,7 +96,7 @@ Vector_Matrix_Float changeMap(Vector_Matrix_Float lousy,bool red){
 	
 	double rand_max = RAND_MAX;
 	srand((int)time(NULL));
-	string allVehicles[] = {">RC<", ">B<", ">KCURT<", ">SUB<"};
+	string allVehicles[] = {">RC<", ">O<", ">KCURT<", ">SUB<"};
 
 	Vector_Matrix_Float boundry = lousy;
 	
@@ -223,6 +224,5 @@ void controller(){
 
 int main(int argc, char const *argv[])
 {
-    controller();
     return 0;
 }

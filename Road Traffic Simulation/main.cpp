@@ -9,7 +9,6 @@
 #include <random>
 #include <chrono>
 #include <cmath>
-#include "./termcolor.hpp"
 #define Vector_Matrix_Float vector<vector<char>>
 using namespace std;
 
