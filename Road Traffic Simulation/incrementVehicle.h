@@ -95,23 +95,12 @@ Vector_Matrix_Float incrementVehicle(Vector_Matrix_Float lousy, bool red){
         //lentogo(in x) according to acceleration is also there
 
         //see if vehicle has collided
-        bool backcollide = false;
-        bool forcollide = false;
-        veh->lefspace=true;
-        veh->rigspace=true;
         if (veh->x2>0 && veh->x1<laneAty.size()-1) {
             int c=0;
-            // if(veh->x1+1<laneAty.size()-1)
-            // {
-            //     if(boundry[veh->y][veh->x1+1]!=' '&&boundry[veh->y][veh->x1+1]!='<'&&boundry[veh->y][veh->x1+1]!='|') {
-            //         forcollide = true;
-            //         veh->v=0;veh->a=0;
-            //     }
-            // }
+            
             for(int a = (int)veh->x2; a <= (int)veh->x1; a++)
             {
-                // if(boundry[veh->y][a]!=veh->type[c]&&boundry[veh->y][a]!='|'&&c<=1)
-                // { backcollide = true;veh->v=0;veh->a=0;}
+                
                 boundry[veh->y][a]=' ';  
                 if(red) boundry[veh->y][15]='|';
                 
@@ -131,18 +120,10 @@ Vector_Matrix_Float incrementVehicle(Vector_Matrix_Float lousy, bool red){
         else if(veh->x1>=boundry[veh->y].size()-1)
         {
             int c=0;
-            // if(veh->x1+1<laneAty.size()-1)
-            // {
-            //     if(boundry[veh->y][veh->x1+1]!=' '||boundry[veh->y][veh->x1+1]!='<'||boundry[veh->y][veh->x1+1]!='|') {
-            //         forcollide = true;
-            //         // cout << boundry[veh->y][veh->x1+1] <<" ";
-            //         veh->v=0;veh->a=0;
-            //     }
-            // }
+            
             for(int a = (int)veh->x2; a <= boundry[veh->y].size()-2; a++)
             {
-                // if(boundry[veh->y][a]!=veh->type[c]) 
-                // { backcollide = true;veh->v=0;veh->a=0;}
+                
                 boundry[veh->y][a]=' ';  
                 
                 c++;      
@@ -153,21 +134,14 @@ Vector_Matrix_Float incrementVehicle(Vector_Matrix_Float lousy, bool red){
         {
             //then we have to make car to travel this much distance
             
-            if(backcollide || forcollide) 
-            {
-                // cout << " crashed "<<backcollide<<" "<<forcollide << endl;
-            }
-            else{
             veh->x1+=round(x);
             veh->x2=round(veh->x1-veh->length+1.0);
-            }
+            
             if (veh->x2>0 && veh->x1<boundry[veh->y].size()-1) {
                 int c=0;
                 for(int a = (int)veh->x2; a <= (int)veh->x1; a++)
                 {
-                    if(c==veh->type.size()-1&&forcollide) boundry[veh->y][a]='#';
-                    else if(c==0&&backcollide) boundry[veh->y][a]='#';
-                    else boundry[veh->y][a]=veh->type[c];  
+                    boundry[veh->y][a]=veh->type[c];  
                     c++;      
                 }
             }
@@ -206,14 +180,11 @@ Vector_Matrix_Float incrementVehicle(Vector_Matrix_Float lousy, bool red){
                 if(veh->inWay>=veh->riglo)
                 {
                     // veh->inWay;
-                    if(backcollide || forcollide) 
-                    {
-                        // cout << " crashed "<<backcollide<<" "<<forcollide << endl;
-                    }
-                    else{
+                    
+                    
                         veh->x1+=round(veh->inWay);
                         veh->x2=round(veh->x1-veh->length+1.0);
-                    }
+                    
                 
                     if (veh->x2>0 && veh->x1<boundry[veh->y].size()-1) {
                         int c=0;
@@ -249,15 +220,11 @@ Vector_Matrix_Float incrementVehicle(Vector_Matrix_Float lousy, bool red){
                 }
                 else { 
                     // veh->riglo;
-                    if(backcollide || forcollide) 
-                    {
-                        // cout << " crashed "<<backcollide<<" "<<forcollide << endl;
-                    }
-                    else{
+                    
                         if(veh->riglo>=x) veh->x1+=round(x);
                         else {veh->x1+=round(veh->riglo);veh->v=veh->riglo;}
                         veh->x2=round(veh->x1-veh->length+1.0);
-                    }
+                    
                     
                 
                     if (veh->x2>0 && veh->x1<boundry[veh->y+1].size()-1) {
@@ -296,17 +263,12 @@ Vector_Matrix_Float incrementVehicle(Vector_Matrix_Float lousy, bool red){
             else{
                 if(veh->leflo>=veh->riglo)
                 {
-                    // veh->leflo;
-                    if(backcollide || forcollide) 
-                    {
-                        // cout << " crashed "<<backcollide<<" "<<forcollide << endl;
-                        
-                    }
-                    else{
+                    
+                   
                         if(veh->leflo>=x) veh->x1+=round(x);
                         else {veh->x1+=round(veh->leflo);veh->v=veh->leflo;}
                         veh->x2=round(veh->x1-veh->length+1.0);
-                    }
+                    
                     // if(veh->leflo>=x) veh->x1+=round(x);
                     // else {veh->x1+=round(veh->leflo);veh->v=veh->leflo;}
                     // veh->x2=round(veh->x1-veh->length+1.0);
@@ -345,15 +307,12 @@ Vector_Matrix_Float incrementVehicle(Vector_Matrix_Float lousy, bool red){
                 } 
                 else { 
                     // veh->riglo;
-                    if(backcollide || forcollide) 
-                    {
-                        // cout << " crashed "<<backcollide<<" "<<forcollide << endl;
-                    }
-                    else{
+                    
+                    
                         if(veh->riglo>=x) veh->x1+=round(x);
                         else {veh->x1+=round(veh->riglo);veh->v=veh->riglo;}
                         veh->x2=round(veh->x1-veh->length+1.0);
-                    }
+                    
                 
                     if (veh->x2>0 && veh->x1<boundry[veh->y+1].size()-1) {
                         int c=0;
