@@ -17,52 +17,53 @@ class vehicle
 public:
     string type;
     /* typr constitute
-    BIKE-<> CAR-<C> BUS-<BB> TRUCK-<TT>
+    BIKE-<B> CAR-<C> AUTO-<AA> TRUCK-<TTT>
      */
     int length;
-    float x1;float x2;float y;
-    float v;float a;
-    float maxspeed;
-    float leflo;float riglo;float inWay;//this are to be updated at time of using
+    int x1;int x2;int y;
+    int v;int a;
+    int maxspeed;
+    int leflo;int riglo;int inWay;
+    bool lefspace=true;bool rigspace=true;//this are to be updated at time of using
+    bool rotright; bool rotleft;
     vehicle(/* args */);
     ~vehicle();
-    void setmaxspeed(float data);void acc(float data);
     void updatelen();
 
-    float lentogo(float deltatime);
-    void updatespeed(float deltatime);
+    int lentogo(int deltatime);
+    void updatespeed(int deltatime);
 };
 
 vehicle::vehicle(/* args */)
 {
     this->x1=0;this->x2=0;this->y=0;this->v=0;this->a=0;this->leflo=0;this->riglo=0;
-    this->maxspeed=0;this->inWay=0;
+    this->maxspeed=0;this->inWay=0;this->rotleft=false;this->rotright=false;
 }
 
 vehicle::~vehicle()
 {
 }
 
-void vehicle::setmaxspeed(float data){this->maxspeed=data;}
-void vehicle::acc(float data){this->a=data;}
+
 void vehicle::updatelen(/* args */)
 {
     length = this->type.length();
 }
 
-void vehicle::updatespeed(float deltatime)
+void vehicle::updatespeed(int deltatime)
 {
     if(this->v<this->maxspeed)this->v+=this->a*deltatime;
 }
-float vehicle::lentogo(float deltatime)
+int vehicle::lentogo(int deltatime)
 {
-    float p;
-    if(this->v<this->maxspeed)  p = this->v*deltatime - (1.0/2.0)*this->a*(deltatime*deltatime);
-    else p = this->v*deltatime;
+    int p;
+    p = this->v*deltatime;
     return p;
 }
 
 
 vector<vehicle> objs;
+
+
 
 #endif
