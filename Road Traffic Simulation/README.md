@@ -1,6 +1,6 @@
 This is a *"Indian Traffic Road Simulator"*, created under the project COP290 - Design Practices in Computer Science
 
-[!Output Sample](https://github.com/CRekkaran/Design-Practices-COP290/blob/master/Road%20Traffic%20Simulation/demo/simulationTraffic_final.mkv)
+![Output Sample](https://github.com/CRekkaran/Design-Practices-COP290/blob/master/Road%20Traffic%20Simulation/demo/simulationTraffic_final.mkv)
 
 Road traffic is depicting accidents with a probability of 8%, rule breaking by jumping the read-light, bikes often stand on the zebra crossing; these are some must have parameters for a road to be simulated. Some times, cars or any vehicle decelerates with no prior reason which is also present in this simulation with a probability of 7%.
 
