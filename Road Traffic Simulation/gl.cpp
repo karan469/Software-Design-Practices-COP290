@@ -225,146 +225,284 @@ GLvoid DrawGLScene(GLvoid)
 			int l = 0;
 			if(veh.x2>0){ l = veh.x1-veh.type.length();} else l=0;
 
-			if(boundry[y][r]=='C'){ //this is autorikshaw
-				if(veh.rotleft)
-				{
+			if(veh.x2 < control.Road_Length+2)
+			{
+				if(boundry[y][r]=='C'){ //this is autorikshaw
+					if(veh.rotleft)
+					{
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)y+y, 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)+1.0f, 1.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)+1.0f, 1.0f);
+						glEnd();
+
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)y+y, 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)+1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)+1.0f, 1.0f);
+						glEnd();
+
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)y+y, 2.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)+1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)+1.0f, 2.0f);
+						glEnd();
+
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)+1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)+1.0f, 1.0f);
+						glEnd();
+						//backface
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)(l), (float)y+y+1.0f, 1.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)+1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)+1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)+1.0f, 1.0f);
+						glEnd();
+						//frintface
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(r), (float)(y+y), 2.0f);
+							
+							glVertex3f((float)(r), (float)(y+y), 1.0f);
+						glEnd();
+					}
+					else if(veh.rotright)
+					{
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)y+y, 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)-1.0f, 1.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)-1.0f, 1.0f);
+						glEnd();
+
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)y+y, 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)-1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)-1.0f, 1.0f);
+						glEnd();
+
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)y+y, 2.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)-1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)-1.0f, 2.0f);
+						glEnd();
+
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)-1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)-1.0f, 1.0f);
+						glEnd();
+						//backface
+						glBegin(GL_QUADS);
+							glColor3f((188/255), (61/255), (26/255));
+							glVertex3f((float)(l), (float)y+y-1.0f, 1.0f);
+							
+							glVertex3f((float)(l), (float)(y+y)-1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)-1.0f, 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1)-1.0f, 1.0f);
+						glEnd();
+						//frintface
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(r), (float)(y+y), 2.0f);
+							
+							glVertex3f((float)(r), (float)(y+y), 1.0f);
+						glEnd();
+					}
+					else {
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)y+y, 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)(l), (float)(y+y), 1.0f);
+						glEnd();
+
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)y+y, 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y), 1.0f);
+						glEnd();
+
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)y+y, 2.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y), 2.0f);
+						glEnd();
+
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1), 1.0f);
+						glEnd();
+						//backface
+						glBegin(GL_QUADS);
+							glColor3f((188/255), (61/255), (26/255));
+							glVertex3f((float)(l), (float)y+y, 1.0f);
+							
+							glVertex3f((float)(l), (float)(y+y), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(l), (float)(y+y+1), 1.0f);
+						glEnd();
+						//frintface
+						glBegin(GL_QUADS);
+							glColor3f(0.686,0.898,0.050);
+							glVertex3f((float)r, (float)(y+y+1), 1.0f);
+							
+							glVertex3f((float)r, (float)(y+y+1), 2.0f);
+							
+							glVertex3f((float)(r), (float)(y+y), 2.0f);
+							
+							glVertex3f((float)(r), (float)(y+y), 1.0f);
+						glEnd();
+					}
+				}else if (boundry[y][r]=='A'){ //this is car, actually
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f(0.0f, 1.0f, 0.0f);
 						glVertex3f((float)r, (float)y+y, 1.0f);
 						
-						glVertex3f((float)r, (float)(y+y+1), 1.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)+1.0f, 1.0f);
-						
-						glVertex3f((float)(l), (float)(y+y)+1.0f, 1.0f);
+					    glVertex3f((float)r, (float)(y+y+1), 1.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y+1), 1.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y), 1.0f);
 					glEnd();
 
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f(0.0f, 1.0f, 0.0f);
 						glVertex3f((float)r, (float)y+y, 1.0f);
 						
-						glVertex3f((float)r, (float)(y+y), 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y)+1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y)+1.0f, 1.0f);
+					    glVertex3f((float)r, (float)(y+y), 2.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y), 2.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y), 1.0f);
 					glEnd();
 
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f(0.0f, 1.0f, 0.0f);
 						glVertex3f((float)r, (float)y+y, 2.0f);
 						
-						glVertex3f((float)r, (float)(y+y+1), 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)+1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y)+1.0f, 2.0f);
+					    glVertex3f((float)r, (float)(y+y+1), 2.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y+1), 2.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y), 2.0f);
 					glEnd();
 
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f(0.0f, 1.0f, 0.0f);
 						glVertex3f((float)r, (float)(y+y+1), 1.0f);
 						
-						glVertex3f((float)r, (float)(y+y+1), 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)+1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)+1.0f, 1.0f);
-					glEnd();
-					//backface
-					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
-						glVertex3f((float)(l), (float)y+y+1.0f, 1.0f);
-						
-						glVertex3f((float)(l), (float)(y+y)+1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)+1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)+1.0f, 1.0f);
-					glEnd();
-					//frintface
-					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
-						glVertex3f((float)r, (float)(y+y+1), 1.0f);
-						
-						glVertex3f((float)r, (float)(y+y+1), 2.0f);
-						
-						glVertex3f((float)(r), (float)(y+y), 2.0f);
-						
-						glVertex3f((float)(r), (float)(y+y), 1.0f);
-					glEnd();
-				}
-				else if(veh.rotright)
-				{
-					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
-						glVertex3f((float)r, (float)y+y, 1.0f);
-						
-						glVertex3f((float)r, (float)(y+y+1), 1.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)-1.0f, 1.0f);
-						
-						glVertex3f((float)(l), (float)(y+y)-1.0f, 1.0f);
-					glEnd();
-
-					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
-						glVertex3f((float)r, (float)y+y, 1.0f);
-						
-						glVertex3f((float)r, (float)(y+y), 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y)-1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y)-1.0f, 1.0f);
-					glEnd();
-
-					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
-						glVertex3f((float)r, (float)y+y, 2.0f);
-						
-						glVertex3f((float)r, (float)(y+y+1), 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)-1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y)-1.0f, 2.0f);
-					glEnd();
-
-					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
-						glVertex3f((float)r, (float)(y+y+1), 1.0f);
-						
-						glVertex3f((float)r, (float)(y+y+1), 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)-1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)-1.0f, 1.0f);
+					    glVertex3f((float)r, (float)(y+y+1), 2.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y+1), 2.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y+1), 1.0f);
 					glEnd();
 					//backface
 					glBegin(GL_QUADS);
 						glColor3f((188/255), (61/255), (26/255));
-						glVertex3f((float)(l), (float)y+y-1.0f, 1.0f);
+						glVertex3f((float)(l), (float)y+y, 1.0f);
 						
-						glVertex3f((float)(l), (float)(y+y)-1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)-1.0f, 2.0f);
-						
-						glVertex3f((float)(l), (float)(y+y+1)-1.0f, 1.0f);
+					    glVertex3f((float)(l), (float)(y+y), 2.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y+1), 2.0f);
+					    
+					    glVertex3f((float)(l), (float)(y+y+1), 1.0f);
 					glEnd();
 					//frintface
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f(0.0f, 1.0f, 0.0f);
 						glVertex3f((float)r, (float)(y+y+1), 1.0f);
 						
-						glVertex3f((float)r, (float)(y+y+1), 2.0f);
-						
-						glVertex3f((float)(r), (float)(y+y), 2.0f);
-						
-						glVertex3f((float)(r), (float)(y+y), 1.0f);
+					    glVertex3f((float)r, (float)(y+y+1), 2.0f);
+					    
+					    glVertex3f((float)(r), (float)(y+y), 2.0f);
+					    
+					    glVertex3f((float)(r), (float)(y+y), 1.0f);
 					glEnd();
 				}
-				else {
+				else if(boundry[y][r]=='#'){
+					//create yellow car box
+					//cout<<"true";
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f((float)160/255,(float)70/255, (float)7/255);
 						glVertex3f((float)r, (float)y+y, 1.0f);
 						
 						glVertex3f((float)r, (float)(y+y+1), 1.0f);
@@ -375,7 +513,7 @@ GLvoid DrawGLScene(GLvoid)
 					glEnd();
 
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f((float)160/255,(float)70/255, (float)7/255);
 						glVertex3f((float)r, (float)y+y, 1.0f);
 						
 						glVertex3f((float)r, (float)(y+y), 2.0f);
@@ -386,7 +524,7 @@ GLvoid DrawGLScene(GLvoid)
 					glEnd();
 
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f((float)160/255,(float)70/255, (float)7/255);
 						glVertex3f((float)r, (float)y+y, 2.0f);
 						
 						glVertex3f((float)r, (float)(y+y+1), 2.0f);
@@ -397,7 +535,7 @@ GLvoid DrawGLScene(GLvoid)
 					glEnd();
 
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f((float)160/255,(float)70/255, (float)7/255);
 						glVertex3f((float)r, (float)(y+y+1), 1.0f);
 						
 						glVertex3f((float)r, (float)(y+y+1), 2.0f);
@@ -419,7 +557,7 @@ GLvoid DrawGLScene(GLvoid)
 					glEnd();
 					//frintface
 					glBegin(GL_QUADS);
-						glColor3f(0.686,0.898,0.050);
+						glColor3f((float)160/255,(float)70/255, (float)7/255);
 						glVertex3f((float)r, (float)(y+y+1), 1.0f);
 						
 						glVertex3f((float)r, (float)(y+y+1), 2.0f);
@@ -428,273 +566,138 @@ GLvoid DrawGLScene(GLvoid)
 						
 						glVertex3f((float)(r), (float)(y+y), 1.0f);
 					glEnd();
+
 				}
-			}else if (boundry[y][r]=='A'){ //this is car, actually
-				glBegin(GL_QUADS);
-					glColor3f(0.0f, 1.0f, 0.0f);
-					glVertex3f((float)r, (float)y+y, 1.0f);
-					
-				    glVertex3f((float)r, (float)(y+y+1), 1.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y), 1.0f);
-				glEnd();
+					else if(boundry[y][r]=='B'){
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.5f, 1.0f);
+						glVertex3f((float)r, (float)y+y, 1.0f);
+						
+						glVertex3f((float)r, (float)(y+y+1), 1.0f);
+						
+						glVertex3f((float)(l), (float)(y+y+1), 1.0f);
+							glVertex3f((float)(l), (float)(y+y), 1.0f);
+					glEnd();
 
-				glBegin(GL_QUADS);
-					glColor3f(0.0f, 1.0f, 0.0f);
-					glVertex3f((float)r, (float)y+y, 1.0f);
-					
-				    glVertex3f((float)r, (float)(y+y), 2.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y), 2.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y), 1.0f);
-				glEnd();
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.5f, 1.0f);
+						glVertex3f((float)r, (float)y+y, 0.5f);
+						
+						glVertex3f((float)r, (float)(y+y+1), 0.5f);
+						
+						glVertex3f((float)(l), (float)(y+y+1), 0.5f);
+							glVertex3f((float)(l), (float)(y+y), 0.5f);
+					glEnd();
 
-				glBegin(GL_QUADS);
-					glColor3f(0.0f, 1.0f, 0.0f);
-					glVertex3f((float)r, (float)y+y, 2.0f);
-					
-				    glVertex3f((float)r, (float)(y+y+1), 2.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y+1), 2.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y), 2.0f);
-				glEnd();
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.5f, 1.0f);
+						glVertex3f((float)r, (float)y+y, 1.0f);
+						
+						glVertex3f((float)r, (float)(y+y+1), 1.0f);
+						
+						glVertex3f((float)(l), (float)(y+y+1), 1.0f);
+							glVertex3f((float)(l), (float)(y+y), 1.0f);
+					glEnd();
 
-				glBegin(GL_QUADS);
-					glColor3f(0.0f, 1.0f, 0.0f);
-					glVertex3f((float)r, (float)(y+y+1), 1.0f);
-					
-				    glVertex3f((float)r, (float)(y+y+1), 2.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y+1), 2.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-				glEnd();
-				//backface
-				glBegin(GL_QUADS);
-					glColor3f((188/255), (61/255), (26/255));
-					glVertex3f((float)(l), (float)y+y, 1.0f);
-					
-				    glVertex3f((float)(l), (float)(y+y), 2.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y+1), 2.0f);
-				    
-				    glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-				glEnd();
-				//frintface
-				glBegin(GL_QUADS);
-					glColor3f(0.0f, 1.0f, 0.0f);
-					glVertex3f((float)r, (float)(y+y+1), 1.0f);
-					
-				    glVertex3f((float)r, (float)(y+y+1), 2.0f);
-				    
-				    glVertex3f((float)(r), (float)(y+y), 2.0f);
-				    
-				    glVertex3f((float)(r), (float)(y+y), 1.0f);
-				glEnd();
-			}
-			else if(boundry[y][r]=='#'){
-				//create yellow car box
-				//cout<<"true";
-				glBegin(GL_QUADS);
-					glColor3f((float)160/255,(float)70/255, (float)7/255);
-					glVertex3f((float)r, (float)y+y, 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1), 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y), 1.0f);
-				glEnd();
-
-				glBegin(GL_QUADS);
-					glColor3f((float)160/255,(float)70/255, (float)7/255);
-					glVertex3f((float)r, (float)y+y, 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y), 2.0f);
-					
-					glVertex3f((float)(l), (float)(y+y), 2.0f);
-					
-					glVertex3f((float)(l), (float)(y+y), 1.0f);
-				glEnd();
-
-				glBegin(GL_QUADS);
-					glColor3f((float)160/255,(float)70/255, (float)7/255);
-					glVertex3f((float)r, (float)y+y, 2.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1), 2.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 2.0f);
-					
-					glVertex3f((float)(l), (float)(y+y), 2.0f);
-				glEnd();
-
-				glBegin(GL_QUADS);
-					glColor3f((float)160/255,(float)70/255, (float)7/255);
-					glVertex3f((float)r, (float)(y+y+1), 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1), 2.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 2.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-				glEnd();
-				//backface
-				glBegin(GL_QUADS);
-					glColor3f((188/255), (61/255), (26/255));
-					glVertex3f((float)(l), (float)y+y, 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y), 2.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 2.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-				glEnd();
-				//frintface
-				glBegin(GL_QUADS);
-					glColor3f((float)160/255,(float)70/255, (float)7/255);
-					glVertex3f((float)r, (float)(y+y+1), 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1), 2.0f);
-					
-					glVertex3f((float)(r), (float)(y+y), 2.0f);
-					
-					glVertex3f((float)(r), (float)(y+y), 1.0f);
-				glEnd();
-
-			}
-				else if(boundry[y][r]=='B'){
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.5f, 1.0f);
-					glVertex3f((float)r, (float)y+y, 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1), 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-						glVertex3f((float)(l), (float)(y+y), 1.0f);
-				glEnd();
-
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.5f, 1.0f);
-					glVertex3f((float)r, (float)y+y, 0.5f);
-					
-					glVertex3f((float)r, (float)(y+y+1), 0.5f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 0.5f);
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.5f, 1.0f);
+						glVertex3f((float)r, (float)(y+y+1), 1.0f);
+						
+						glVertex3f((float)r, (float)(y+y+1), 0.5f);
+						
+						glVertex3f((float)(l), (float)(y+y+1), 0.5f);
+							glVertex3f((float)(l), (float)(y+y+1), 1.0f);
+					glEnd();
+					//backface
+					glBegin(GL_QUADS);
+						glColor3f((188/255), (61/255), (26/255));
+						glVertex3f((float)(l), (float)y+y, 1.0f);
+						
 						glVertex3f((float)(l), (float)(y+y), 0.5f);
-				glEnd();
-
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.5f, 1.0f);
-					glVertex3f((float)r, (float)y+y, 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1), 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-						glVertex3f((float)(l), (float)(y+y), 1.0f);
-				glEnd();
-
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.5f, 1.0f);
-					glVertex3f((float)r, (float)(y+y+1), 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1), 0.5f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 0.5f);
-						glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-				glEnd();
-				//backface
-				glBegin(GL_QUADS);
-					glColor3f((188/255), (61/255), (26/255));
-					glVertex3f((float)(l), (float)y+y, 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y), 0.5f);
-					
-					glVertex3f((float)(l), (float)(y+y+1), 0.5f);
-						glVertex3f((float)(l), (float)(y+y+1), 1.0f);
-				glEnd();
-				//frintface
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.5f, 1.0f);
-					glVertex3f((float)r, (float)(y+y+1), 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1), 0.5f);
-					
-					glVertex3f((float)(r), (float)(y+y), 0.5f);
-						glVertex3f((float)(r), (float)(y+y), 1.0f);
-				glEnd();
+						
+						glVertex3f((float)(l), (float)(y+y+1), 0.5f);
+							glVertex3f((float)(l), (float)(y+y+1), 1.0f);
+					glEnd();
+					//frintface
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.5f, 1.0f);
+						glVertex3f((float)r, (float)(y+y+1), 1.0f);
+						
+						glVertex3f((float)r, (float)(y+y+1), 0.5f);
+						
+						glVertex3f((float)(r), (float)(y+y), 0.5f);
+							glVertex3f((float)(r), (float)(y+y), 1.0f);
+					glEnd();
 
 
-			} else if(boundry[y][r]=='T'){
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.0f, 0.7f);
-					glVertex3f((float)r, (float)y+y-0.2f, 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1+0.2f), 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1+0.2f), 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y)-0.2f, 1.0f);
-				glEnd();
+				} else if(boundry[y][r]=='T'){
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.0f, 0.7f);
+						glVertex3f((float)r, (float)y+y-0.2f, 1.0f);
+						
+						glVertex3f((float)r, (float)(y+y+1+0.2f), 1.0f);
+						
+						glVertex3f((float)(l), (float)(y+y+1+0.2f), 1.0f);
+						
+						glVertex3f((float)(l), (float)(y+y)-0.2f, 1.0f);
+					glEnd();
 
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.0f, 0.7f);
-					glVertex3f((float)r, (float)y+y-0.2f, 3.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1+0.2f), 3.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1+0.2f), 3.0f);
-					
-					glVertex3f((float)(l), (float)(y+y)-0.2f, 3.0f);
-				glEnd();
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.0f, 0.7f);
+						glVertex3f((float)r, (float)y+y-0.2f, 3.0f);
+						
+						glVertex3f((float)r, (float)(y+y+1+0.2f), 3.0f);
+						
+						glVertex3f((float)(l), (float)(y+y+1+0.2f), 3.0f);
+						
+						glVertex3f((float)(l), (float)(y+y)-0.2f, 3.0f);
+					glEnd();
 
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.0f, 0.7f);
-					glVertex3f((float)r, (float)y+y-0.2f, 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1+0.2f), 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1+0.2f), 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y)-0.2f, 1.0f);
-				glEnd();
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.0f, 0.7f);
+						glVertex3f((float)r, (float)y+y-0.2f, 1.0f);
+						
+						glVertex3f((float)r, (float)(y+y+1+0.2f), 1.0f);
+						
+						glVertex3f((float)(l), (float)(y+y+1+0.2f), 1.0f);
+						
+						glVertex3f((float)(l), (float)(y+y)-0.2f, 1.0f);
+					glEnd();
 
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.0f, 0.7f);
-					glVertex3f((float)r, (float)(y+y+1+0.2f), 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1+0.2f), 3.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1+0.2f), 3.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1+0.2f), 1.0f);
-				glEnd();
-				//backface
-				glBegin(GL_QUADS);
-					glColor3f((188/255), (61/255), (26/255));
-					glVertex3f((float)(l), (float)y+y-0.2f, 1.0f);
-					
-					glVertex3f((float)(l), (float)(y+y)-0.2f, 3.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1+0.2f), 3.0f);
-					
-					glVertex3f((float)(l), (float)(y+y+1+0.2f), 1.0f);
-				glEnd();
-				//frintface
-				glBegin(GL_QUADS);
-					glColor3f(0.5f, 0.0f, 0.7f);
-					glVertex3f((float)r, (float)(y+y+1+0.2f), 1.0f);
-					
-					glVertex3f((float)r, (float)(y+y+1+0.2f), 3.0f);
-					
-					glVertex3f((float)(r), (float)(y+y)-0.2f, 3.0f);
-					
-					glVertex3f((float)(r), (float)(y+y)-0.2f, 1.0f);
-				glEnd();
-			}
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.0f, 0.7f);
+						glVertex3f((float)r, (float)(y+y+1+0.2f), 1.0f);
+						
+						glVertex3f((float)r, (float)(y+y+1+0.2f), 3.0f);
+						
+						glVertex3f((float)(l), (float)(y+y+1+0.2f), 3.0f);
+						
+						glVertex3f((float)(l), (float)(y+y+1+0.2f), 1.0f);
+					glEnd();
+					//backface
+					glBegin(GL_QUADS);
+						glColor3f((188/255), (61/255), (26/255));
+						glVertex3f((float)(l), (float)y+y-0.2f, 1.0f);
+						
+						glVertex3f((float)(l), (float)(y+y)-0.2f, 3.0f);
+						
+						glVertex3f((float)(l), (float)(y+y+1+0.2f), 3.0f);
+						
+						glVertex3f((float)(l), (float)(y+y+1+0.2f), 1.0f);
+					glEnd();
+					//frintface
+					glBegin(GL_QUADS);
+						glColor3f(0.5f, 0.0f, 0.7f);
+						glVertex3f((float)r, (float)(y+y+1+0.2f), 1.0f);
+						
+						glVertex3f((float)r, (float)(y+y+1+0.2f), 3.0f);
+						
+						glVertex3f((float)(r), (float)(y+y)-0.2f, 3.0f);
+						
+						glVertex3f((float)(r), (float)(y+y)-0.2f, 1.0f);
+					glEnd();
+				}
+		}
 
 		}
 	}
