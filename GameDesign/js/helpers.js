@@ -27,9 +27,7 @@ function Bullet(x, y, vely, w, h, color) {
 	this.color = color;
 };
 
-/**
- * Update bullet position
- */
+//update bullet position
 Bullet.prototype.update = function() {
 	this.y += this.vely;
 };
@@ -116,19 +114,19 @@ function InputHandeler() {
 	});
 };
 
-/**
- * Returns whether a key is pressod down
- * @param  {number}  code the keycode to check
- * @return {bool}         the result from check
+/*
+  Returns whether a key is pressod down
+  @param  {number}  code the keycode to check
+  @return {bool}         the result from check
  */
 InputHandeler.prototype.isDown = function(code) {
 	return this.down[code];
 };
 
-/**
- * Return wheter a key has been pressed
- * @param  {number}  code the keycode to check
- * @return {bool}         the result from check
+/*
+  Return wheter a key has been pressed
+  @param  {number}  code the keycode to check
+  @return {bool}         the result from check
  */
 InputHandeler.prototype.isPressed = function(code) {
 	// if key is registred as pressed return false else if
