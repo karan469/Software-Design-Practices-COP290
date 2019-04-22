@@ -1,6 +1,6 @@
 # COP290_Assignments
 
-Assignment-1: 
+* Assignment-1: 
 Expressions being evaluated:
                         
                   Convolution of Matrix with Padding:
@@ -34,10 +34,10 @@ Functions being called:
                   Vector softmax(vector)
                   Vector sigmoid(vector)
                 
-Compile program: 
+* Compile program: 
                   
                   > make
                
-Clean executables:
+* Clean executables:
                   
                   > make clean
