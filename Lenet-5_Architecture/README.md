@@ -1,4 +1,4 @@
-~lenet subdirectory:
+# Lenet subdirectory:
 
 	{./imgsource} : all images with .png extension saved locally here
 	{./conv1.txt | ./conv2.txt | ./fc1.txt | ./fc2.txt} : pretrained weights for all layers including fully connected ones
@@ -11,9 +11,9 @@
 	takeFilters.h : create filters using pre-trained weighted file.
 
 
-~Functions in imgProcess subdirectory
+# Functions in imgProcess subdirectory
 
-Expressions being evaluated:
+* Expressions being evaluated:
                         
                   Convolution of Matrix with Padding:
                       As matrix multiplication:
@@ -36,7 +36,7 @@ Expressions being evaluated:
                   TANH Activation:
                       ./main.out tanh_activation matrix1.txt matrix1_numrows
                         
-Functions being called: 
+* Functions being called: 
                         
                   Vector_Matrix convolution_matrixmult(kernel_matrix, image)
                   Vector_Matrix convolution(kernel, image)    {If command is withPadding then image is changed by convolution_pad(image, int padding)}
