@@ -1,7 +1,11 @@
 var display,input,input1,frames,spFrame,lvFrame,alSprite, taSprite,ciSprite,aliens,dir,tank,tank1,bullets,cities,background;
-	
+var theyHit = 0;
+var weHit = 0;
+var enemyCount = 0;
 var mySound;
 var mySound1;
+var scoree;
+inputController = new InputHandeler();
 /**
  * Initiate and start the game
  */
@@ -43,13 +47,13 @@ function init() {
 	// create the tank object
 	tank = {
 		sprite: taSprite,
-		x: (display.width - taSprite.w) / 2,
+		x: (display.width - taSprite.w) / 1.5,
 		y: display.height - (30 + taSprite.h)
 	};
 
 	tank1 = {
 		sprite: taSprite,
-		x: (display.width - taSprite.w) / 1.5,
+		x: (display.width - taSprite.w) / 2,
 		y: display.height - (30 + taSprite.h)	
 	};
 
@@ -135,6 +139,7 @@ function init() {
 			});
 		}
 	}
+	enemyCount = aliens.length;
 };
 
 function sound(src) {
@@ -170,6 +175,7 @@ function run() {
  * Update the game logic
  */
 function update() {
+	// if(input.isDown())
 	// update the frame count
 	frames++;
 
@@ -220,6 +226,7 @@ function update() {
 				bullets.splice(i, 1);
 				i--;
 				len--;
+				theyHit++;
 				continue;
 			}
 		}
@@ -233,6 +240,9 @@ function update() {
 				bullets.splice(i, 1);
 				i--;
 				len--;
+				weHit++;
+				enemyCount--;
+				console.log(enemyCount);
 				// increase the movement frequence of the aliens
 				// when there are less of them
 				switch (len2) {
@@ -307,15 +317,13 @@ function update() {
 function render() {
 	display.clear(); // clear the game canvas
 	
-	// var canvas = document.getElementById("canvas"),
- //    ctx = canvas.getContext("2d");
 	// background = new Image();
 	// background.src = "Images/Background.png";
 
-	// Make sure the image is loaded first otherwise nothing will draw.
-	background.onload = function(){
-	    ctx.drawImage(background,0,0);   
-	}
+	// // Make sure the image is loaded first otherwise nothing will draw.
+	// background.onload = function(){
+	//     ctx.drawImage(background,0,0);   
+	// }
 
 	// draw all aliens
 	for (var i = 0, len = aliens.length; i < len; i++) {
@@ -333,6 +341,17 @@ function render() {
 	// draw the tank sprite
 	display.drawSprite(tank.sprite, tank.x, tank.y);
 	display.drawSprite(tank1.sprite,tank1.x,tank1.y);
+	display.ctx.fillStyle = "red";
+	display.ctx.font = "20px Arial";
+
+	if (enemyCount==0){
+
+	} else {
+		scoree = (weHit-theyHit)-(frames/1000);
+	}
+	
+	scoree = Math.round(scoree*100)/100;
+	display.ctx.fillText("Score: " + scoree, 5, 29);
 };
 
 // start and run the game
