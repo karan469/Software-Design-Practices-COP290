@@ -554,4 +554,4 @@ function render() {
 };
 
 // start and run the game
-main();
+//main();
