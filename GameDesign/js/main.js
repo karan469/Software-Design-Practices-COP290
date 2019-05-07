@@ -5,6 +5,7 @@ var enemyCount = 0;
 var mySound;
 var mySound1;
 var scoree;
+var MainMenuImage = new Image();
 inputController = new InputHandeler();
 /**
  * Initiate and start the game
@@ -27,16 +28,41 @@ function main() {
 		taSprite = new Sprite(this, 62, 0, 22, 16);
 		ciSprite = new Sprite(this, 84, 8, 36, 24);
 
-		// initate and run the game
+		// if(inputController.isPressed(83)){
+		// 	// initate and run the game
+		// 	init();
+		// 	run();	
+		// } else  {
+		// 	runMenu();
+		// }
+
+		
 		init();
-		run();
+		run();	
+		
+		
 	});
 	img.src = "res/invaders.png";
 };
 
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+}
+
 function init() {
 	mySound = new sound("background-music.mp3");
-	mySound.play(); //check this is not working for infinte loop
+
 	//starting
 	frames  = 0;
 	spFrame = 0;
@@ -142,20 +168,13 @@ function init() {
 	enemyCount = aliens.length;
 };
 
-function sound(src) {
-  this.sound = document.createElement("audio");
-  this.sound.src = src;
-  this.sound.setAttribute("preload", "auto");
-  this.sound.setAttribute("controls", "none");
-  this.sound.style.display = "none";
-  document.body.appendChild(this.sound);
-  this.play = function(){
-    this.sound.play();
-  }
-  this.stop = function(){
-    this.sound.pause();
-  }
-}
+
+// function runMenu() {
+// 	var loop = function() {
+// 		renderMenu();
+// 	};
+// 	window.requestAnimationFrame(loop, display.canvas);
+// };
 
 /**
  * Wrapper around the game loop function, updates and renders
@@ -163,13 +182,27 @@ function sound(src) {
  */
 function run() {
 	var loop = function() {
-		update();
-		render();
+		if(inputController.isPressed(80)){
+			//render pause
+			renderPause();
+		} else{
+			update();
+			render();
+			window.requestAnimationFrame(loop, display.canvas);			
+		}
 
-		window.requestAnimationFrame(loop, display.canvas);
 	};
 	window.requestAnimationFrame(loop, display.canvas);
 };
+
+function mySleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}; 
 
 /**
  * Update the game logic
@@ -178,7 +211,7 @@ function update() {
 	// if(input.isDown())
 	// update the frame count
 	frames++;
-
+	
 	// update tank position depending on pressed keys
 	if (input.isDown(37)) { // Left
 		tank.x -= 4;
@@ -309,6 +342,70 @@ function update() {
 			}
 		}
 	}
+	if(enemyCount==0){
+		//frames--;
+		display.clear();
+		display.ctx.fillStyle = "yello";
+		display.ctx.font = "20px Arial";
+		display.ctx.fillText("We have won!! But not entirely. This isn't the end..", 30, 250);
+		//mySleep(4000);
+		// display.clear();
+		display.ctx.fillStyle = "yellow";
+		display.ctx.font = "20px Arial";
+		display.ctx.fillText("We are having two choices..", 30, 270);
+
+		display.ctx.fillStyle = "red";
+		display.ctx.font = "20px Arial";
+		display.ctx.fillText("Either we let them go..Or use their advaance tech", 30, 290);
+		display.ctx.fillText("to invade their planet for natural resources.",30,310);
+		display.ctx.fillStyle = "yellow";
+		display.ctx.fillText("What's say !?",30,330);
+
+		display.ctx.fillStyle = "green";
+		display.ctx.fillText("(Press Y to invade them..N to let them go)",30,390);
+		var invade;
+		if(inputController.isPressed(78)){
+			display.clear();
+			invade = false;
+			display.ctx.fillText("You made a right choice. This is a cause not just for humanity but bigger. Others have a right to live peacefully too.",30,250);
+		} else if (inputController.isPressed(89)){
+			display.clear();
+			invade = true;
+			display.ctx.fillText("You made a poor choice..This is against our principles..This is beyond only our cause.",30,250);
+		}
+		// if(invade==true){
+		// 	display.clear();
+		// 	display.ctx.fillStyle = "red";
+		// 	display.ctx.fillText("You made a poor choice..This is against our principles..This is beyond only our cause.",30,250);
+		// } else if(invade==false) {
+		// 	display.clear();
+		// 	display.ctx.fillStyle = "red";
+		// 	display.ctx.fillText("You made a right choice. This is a cause not just for humanity but bigger. Others have a right to live peacefully too.",30,250);
+		// }
+	}
+};
+
+
+
+function renderPause() {
+	mySound.stop();
+	mySleep(500);
+	mySound = new sound("melodyloops.mp3");
+	mySound.play();
+	display.clear();
+	display.ctx.fillStyle = "red";
+	display.ctx.font = "20px Arial";
+	display.ctx.fillText("Pause Menu", 180, 250);
+};
+
+function renderMenu() {
+	//display.clear();
+	mySound = new Sound();
+	display.ctx.fillStyle = "red";
+	display.ctx.font = "30px Arial";
+
+	display.ctx.fillText("Main Menu", 180, 250);
+	display.ctx.fillText("(Press S to start)",190,250);
 };
 
 /**
@@ -316,7 +413,7 @@ function update() {
  */
 function render() {
 	display.clear(); // clear the game canvas
-	
+	mySound.play();
 	// background = new Image();
 	// background.src = "Images/Background.png";
 
