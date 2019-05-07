@@ -180,11 +180,13 @@ function init() {
  * Wrapper around the game loop function, updates and renders
  * the game
  */
+ var temp = 0;
 var isPreviousPause = 0;
 var bo = false;
 function run() {
 	var loop = function() {
-		console.log(isPreviousPause);
+		// console.log(isPreviousPause);
+		// if(temp==0 && inputController.isPressed(65)) renderMenu();
 		if(inputController.isPressed(80) || isPreviousPause == 1){	
 			if(isPreviousPause==0)
 			{
@@ -195,6 +197,8 @@ function run() {
 			if(inputController.isPressed(82) && bo==false)
 			{
 				isPreviousPause=0;
+				mySound.stop();
+				mySound = new sound("background-music.mp3");
 			}
 			bo=false;
 			//window.requestAnimationFrame(loop, display.canvas);	
@@ -216,6 +220,53 @@ function mySleep(milliseconds) {
     }
   }
 }; 
+
+function resultOfEndgame(){
+	if(inputController.isDown(78)){
+			display.clear();
+			display.ctx.fillText("You made a right choice. This is a cause not just for humanity ",20,250);
+			display.ctx.fillText("but bigger. Others have a right to live peacefully too.",20,270);
+			display.ctx.fillStyle = "yellow";
+			display.ctx.font = "30px Arial";
+			display.ctx.fillText("YOU WON IN THE ",15,360);
+			display.ctx.fillText("NAME OF HUMANITY!!",15,380);
+			display.ctx.fillStyle = "red";
+			display.ctx.font = "20px Arial";
+
+			if (enemyCount==0){
+
+			} else {
+				scoree = (weHit-theyHit)-(frames/1000);
+			}
+			
+			scoree = Math.round(scoree*100)/100;
+			display.ctx.fillText("Score: " + scoree, 5, 29);
+
+		} else if (inputController.isDown(89)){
+			display.clear();
+			display.ctx.fillText("You made a poor choice..This is against ",30,250);
+			display.ctx.fillText("our principles..This is beyond only our cause.",30,270);
+
+			display.ctx.fillStyle = "yellow";
+			display.ctx.font = "30px Arial";
+			display.ctx.fillText("YOU LOST IN THE ",15,360);
+			display.ctx.fillText("NAME OF HUMANITY!!",15,380);
+
+			display.ctx.fillStyle = "red";
+			display.ctx.font = "20px Arial";
+
+			if (enemyCount==0){
+
+			} else {
+				scoree = (weHit-theyHit)-(frames/1000);
+			}
+			
+			scoree = Math.round(scoree*100)/100;
+			display.ctx.fillText("Score: " + scoree, 5, 29);
+		} else {
+			resultOfEndgame();
+		}
+};
 
 /**
  * Update the game logic
@@ -355,11 +406,16 @@ function update() {
 			}
 		}
 	}
-	// console.log(frames);
-	// if(frames==5000 && enemyCount!=0){
-
-	// }
-	if(enemyCount==0){
+	//console.log(theyHit);
+	if(frames>4000 && enemyCount!=0){
+		display.clear();
+		display.ctx.fillStyle = "yello";
+		display.ctx.font = "20px Arial";
+		display.ctx.fillText("We lost the war. The invaders are successful ", 30, 250);
+		display.ctx.fillText("in stealing our natural resources..",30,270);
+		display.ctx.fillText("specially the solar energy by using the Dyson Sphere.",30,290);
+	}
+	else if(enemyCount==0){
 		//frames--;
 		display.clear();
 		display.ctx.fillStyle = "yello";
@@ -380,16 +436,31 @@ function update() {
 
 		display.ctx.fillStyle = "green";
 		display.ctx.fillText("(Press Y to invade them..N to let them go)",30,390);
-		var invade;
-		if(inputController.isPressed(78)){
-			display.clear();
-			invade = false;
-			display.ctx.fillText("You made a right choice. This is a cause not just for humanity but bigger. Others have a right to live peacefully too.",30,250);
-		} else if (inputController.isPressed(89)){
-			display.clear();
-			invade = true;
-			display.ctx.fillText("You made a poor choice..This is against our principles..This is beyond only our cause.",30,250);
+
+		display.ctx.fillStyle = "red";
+		display.ctx.font = "20px Arial";
+
+		if (enemyCount==0){
+
+		} else {
+			scoree = (weHit-theyHit)-(frames/1000);
 		}
+		
+		scoree = Math.round(scoree*100)/100;
+		display.ctx.fillText("Score: " + scoree, 5, 29);
+		//sleep(100);
+		var invade;
+		// if(inputController.isDown(78)){
+		// 	display.clear();
+		// 	display.ctx.fillText("You made a right choice. This is a cause not just for humanity but bigger. Others have a right to live peacefully too.",30,250);
+		// } else if (inputController.isDown(89)){
+		// 	display.clear();
+		// 	display.ctx.fillText("You made a poor choice..This is against our principles..This is beyond only our cause.",30,250);
+		// } else {
+
+		// }
+
+
 		// if(invade==true){
 		// 	display.clear();
 		// 	display.ctx.fillStyle = "red";
@@ -399,6 +470,7 @@ function update() {
 		// 	display.ctx.fillStyle = "red";
 		// 	display.ctx.fillText("You made a right choice. This is a cause not just for humanity but bigger. Others have a right to live peacefully too.",30,250);
 		// }
+		resultOfEndgame();
 	}
 };
 
@@ -426,12 +498,16 @@ function renderPause() {
 
 function renderMenu() {
 	//display.clear();
-	mySound = new Sound();
+	mySound.stop();
+	mySleep(500);
+	mySound = new Sound("melodyloops.mp3");
 	display.ctx.fillStyle = "red";
 	display.ctx.font = "30px Arial";
 
 	display.ctx.fillText("Main Menu", 180, 250);
 	display.ctx.fillText("(Press S to start)",190,250);
+	temp = 1;
+	run();
 };
 
 /**
