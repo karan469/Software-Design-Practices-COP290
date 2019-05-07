@@ -180,16 +180,29 @@ function init() {
  * Wrapper around the game loop function, updates and renders
  * the game
  */
+var isPreviousPause = 0;
+var bo = false;
 function run() {
 	var loop = function() {
-		if(inputController.isPressed(80)){
-			//render pause
-			renderPause();
-		} else{
+		console.log(isPreviousPause);
+		if(inputController.isPressed(80) || isPreviousPause == 1){	
+			if(isPreviousPause==0)
+			{
+				renderPause();
+				bo=true;
+				isPreviousPause++;
+			}
+			if(inputController.isPressed(82) && bo==false)
+			{
+				isPreviousPause=0;
+			}
+			bo=false;
+			//window.requestAnimationFrame(loop, display.canvas);	
+		} else if(isPreviousPause==0){
 			update();
 			render();
-			window.requestAnimationFrame(loop, display.canvas);			
 		}
+		window.requestAnimationFrame(loop, display.canvas);			
 
 	};
 	window.requestAnimationFrame(loop, display.canvas);
@@ -275,7 +288,7 @@ function update() {
 				len--;
 				weHit++;
 				enemyCount--;
-				console.log(enemyCount);
+				//console.log(enemyCount);
 				// increase the movement frequence of the aliens
 				// when there are less of them
 				switch (len2) {
@@ -342,6 +355,10 @@ function update() {
 			}
 		}
 	}
+	// console.log(frames);
+	// if(frames==5000 && enemyCount!=0){
+
+	// }
 	if(enemyCount==0){
 		//frames--;
 		display.clear();
@@ -396,6 +413,15 @@ function renderPause() {
 	display.ctx.fillStyle = "red";
 	display.ctx.font = "20px Arial";
 	display.ctx.fillText("Pause Menu", 180, 250);
+
+	display.ctx.fillStyle = "green";
+	display.ctx.font = "20px Arial";
+	display.ctx.fillText("(Press R to Resume)", 150, 270);
+	
+	// if(inputController.isPressed(80)){
+	// 	run();
+	// }
+	run();
 };
 
 function renderMenu() {
