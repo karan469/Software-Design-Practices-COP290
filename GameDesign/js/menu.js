@@ -19,7 +19,7 @@ var shipImage = new Image();
 var backgroundY = 0;
 var speed = 1;
 
-var buttonX = [192,110,149,160];
+var buttonX = [50,110,149,160];
 var buttonY = [100,140,180,220];
 var buttonWidth = [96,260,182,160];
 var buttonHeight = [40,40,40,40];
@@ -38,15 +38,29 @@ var timerId = 0;
 var fadeId = 0;
 var time = 0.0;
 
+context.font = "30px Comic Sans MS";
+context.fillStyle = "red";
+context.textAlign = "center";
+context.fillText("Space Invader", canvas.width/2, canvas.height/2); 
+
+jQuery.loadScript = function (url, callback) {
+    jQuery.ajax({
+        url: url,
+        dataType: 'script',
+        success: callback,
+        async: true
+    });
+}
+
 shipImage.src = "Images/ship.png";
 bgImage.onload = function(){
 	context.drawImage(bgImage, 0, backgroundY);
 };
-bgImage.src = "Images/Background.png";
+bgImage.src = "Images/Backgdround.png";
 logoImage.onload = function(){
 	context.drawImage(logoImage, 50, -10);
 }
-logoImage.src = "Images/logo.png";
+logoImage.src = "Images/logo1.png";
 playImage.onload = function(){
 	context.drawImage(playImage, buttonX[0], buttonY[0]);
 }
@@ -66,6 +80,7 @@ creditsImage.src = "Images/credits.png";
 
 timerId = setInterval("update()", 1000/frames);
 
+
 canvas.addEventListener("mousemove", checkPos);
 canvas.addEventListener("mouseup", checkClick);
 
@@ -73,6 +88,7 @@ function update() {
 	clear();
 	move();
 	draw();
+	
 }
 function clear() {
 	context.clearRect(0, 0, width, height);
@@ -90,10 +106,13 @@ function move(){
 	}
 	shipSize += shipRotate;
 }
+
 function draw(){
+
+
 	context.drawImage(bgImage, 0, backgroundY);
 	context.drawImage(logoImage, 50,-10);
-	context.drawImage(playImage, buttonX[0], buttonY[0]);
+	context.drawImage(playImage, buttonX[0], buttonY[0],5,1);
 	context.drawImage(instructImage, buttonX[1], buttonY[1]);
 	context.drawImage(settingsImage, buttonX[2], buttonY[2]);
 	context.drawImage(creditsImage, buttonX[3], buttonY[3]);
@@ -101,6 +120,10 @@ function draw(){
 		context.drawImage(shipImage, shipX[0] - (shipSize/2), shipY[0], shipSize, shipHeight);
 		context.drawImage(shipImage, shipX[1] - (shipSize/2), shipY[1], shipSize, shipHeight);
 	}
+	context.font = "30px Comic Sans MS";
+	context.fillStyle = "red";
+	context.textAlign = "center";
+	context.fillText("Space Invader", canvas.width/2, canvas.height/2); 
 }
 function checkPos(mouseEvent){
 	if(mouseEvent.pageX || mouseEvent.pageY == 0){
@@ -130,8 +153,11 @@ function checkClick(mouseEvent){
 			if(mouseY > buttonY[i] && mouseY < buttonY[i] + buttonHeight[i]){
 				fadeId = setInterval("fadeOut()", 1000/frames);
 				clearInterval(timerId);
+				main();
 				canvas.removeEventListener("mousemove", checkPos);
 				canvas.removeEventListener("mouseup", checkClick);
+
+
 			}
 		}
 	}
@@ -147,4 +173,6 @@ function fadeOut(){
 		canvas.addEventListener("mousemove", checkPos);
 		canvas.addEventListener("mouseup", checkClick);
 	}
+	
 }
+
